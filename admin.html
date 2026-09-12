@@ -287,8 +287,8 @@
           <h3>Current Location</h3>
           <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Shown on the homepage "Currently Based" band.</p>
           <form id="settingsForm">
-            <div class="field"><label>Location</label><input id="settingLocation" placeholder="Honolulu, Hawaiʻi" /></form>
-            <button type="submit" class="btn btn-gold" style="margin-top:8px" form="settingsForm">Save</button>
+            <div class="field"><label>Location</label><input id="settingLocation" placeholder="Honolulu, Hawaiʻi" /></div>
+            <button type="submit" class="btn btn-gold" style="margin-top:8px">Save</button>
           </form>
         </div>
       </div>
@@ -307,12 +307,11 @@
 
 <script>
 /* ============================================================
-   CONFIG
+   CONFIG  — corrected anon key (had a missing "e" before _7fRYk)
    ============================================================ */
 const SUPABASE_URL  = 'https://fybwlumglknhjbjmqrtu.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5YndsdW1nbGtuaGpiam1xcnR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxODgyNjYsImV4cCI6MjEwNDc2NDI2Nn0.63-zUg7loxDcONGxv7Fi7ogTPXvvonOlxh0G_7fRYk';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5YndsdW1nbGtuaGpiam1xcnR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxODgyNjYsImV4cCI6MjEwNDc2NDI2Nn0.63-zUg7loxDcONGxv7Fi7ogTPXvvonOlxh0G_e7fRYk';
 
-/* 🔑 CHANGE THIS TO YOUR OWN SECRET STRING */
 const ADMIN_TOKEN = 'MOMOA-ADMIN-2025';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -362,49 +361,90 @@ document.querySelectorAll('.nav-link').forEach(el => {
 });
 
 /* ============================================================
-   LOAD
+   LOAD  — each loader is independent + logs real errors
    ============================================================ */
 async function loadAll(){
-  await Promise.all([loadBookings(), loadNewsletter(), loadUploads(), loadNews(), loadSettings()]);
+  await Promise.allSettled([
+    loadBookings(),
+    loadNewsletter(),
+    loadUploads(),
+    loadNews(),
+    loadSettings()
+  ]);
   updateCounts();
 }
 
 async function loadBookings(){
-  const { data, error } = await sb.from('bookings').select('*').order('created_at', { ascending: false });
-  if (error){ toast('Bookings: ' + error.message, true); return; }
-  ALL_BOOKINGS = data || [];
-  renderBookings();
-  renderRecent();
-  renderStats();
+  try {
+    const { data, error } = await sb.from('bookings').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    ALL_BOOKINGS = data || [];
+    renderBookings();
+    renderRecent();
+    renderStats();
+  } catch (e){
+    console.error('loadBookings failed:', e);
+    toast('Bookings: ' + (e.message || e), true);
+    document.querySelector('#bookingsTable tbody').innerHTML =
+      `<tr><td colspan="8" class="empty">Error: ${escapeHtml(e.message || e)}</td></tr>`;
+    document.querySelector('#recentBookingsTable tbody').innerHTML =
+      `<tr><td colspan="5" class="empty">Error loading.</td></tr>`;
+  }
 }
 
 async function loadNewsletter(){
-  const { data, error } = await sb.from('newsletter').select('*').order('created_at', { ascending: false });
-  if (error){ toast('Newsletter: ' + error.message, true); return; }
-  ALL_NEWSLETTER = data || [];
-  renderNewsletter();
-  renderStats();
+  try {
+    const { data, error } = await sb.from('newsletter').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    ALL_NEWSLETTER = data || [];
+    renderNewsletter();
+    renderStats();
+  } catch (e){
+    console.error('loadNewsletter failed:', e);
+    toast('Newsletter: ' + (e.message || e), true);
+    document.querySelector('#newsletterTable tbody').innerHTML =
+      `<tr><td colspan="2" class="empty">Error: ${escapeHtml(e.message || e)}</td></tr>`;
+  }
 }
 
 async function loadUploads(){
-  const { data, error } = await sb.from('uploads').select('*').order('created_at', { ascending: false });
-  if (error){ toast('Uploads: ' + error.message, true); return; }
-  ALL_UPLOADS = data || [];
-  renderGiftcards();
-  renderStats();
+  try {
+    const { data, error } = await sb.from('uploads').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    ALL_UPLOADS = data || [];
+    renderGiftcards();
+    renderStats();
+  } catch (e){
+    console.error('loadUploads failed:', e);
+    toast('Uploads: ' + (e.message || e), true);
+    document.getElementById('giftcardsGrid').innerHTML =
+      `<div class="empty" style="grid-column:1/-1">Error: ${escapeHtml(e.message || e)}</div>`;
+  }
 }
 
 async function loadNews(){
-  const { data, error } = await sb.from('news').select('*').order('created_at', { ascending: false });
-  if (error){ toast('News: ' + error.message, true); return; }
-  ALL_NEWS = data || [];
-  renderNews();
-  renderStats();
+  try {
+    const { data, error } = await sb.from('news').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    ALL_NEWS = data || [];
+    renderNews();
+    renderStats();
+  } catch (e){
+    console.error('loadNews failed:', e);
+    toast('News: ' + (e.message || e), true);
+    document.getElementById('newsList').innerHTML =
+      `<div class="empty">Error: ${escapeHtml(e.message || e)}</div>`;
+  }
 }
 
 async function loadSettings(){
-  const { data } = await sb.from('settings').select('*').eq('id',1).maybeSingle();
-  if (data) document.getElementById('settingLocation').value = data.current_location || '';
+  try {
+    const { data, error } = await sb.from('settings').select('*').eq('id',1).maybeSingle();
+    if (error) throw error;
+    if (data) document.getElementById('settingLocation').value = data.current_location || '';
+  } catch (e){
+    console.error('loadSettings failed:', e);
+  }
 }
 
 /* ============================================================
