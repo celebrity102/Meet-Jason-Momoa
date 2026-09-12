@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jason Momoa — Official Fan Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+  :root{
+    --bg:#0b0d10; --panel:#12161b; --line:#1f262e;
+    --ink:#e9e6df; --muted:#8b93a0; --gold:#c9a24a; --gold-soft:#e6c878;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.5px}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+
+  /* NAV */
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(11,13,16,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .brand{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:2px;color:var(--gold)}
+  .brand span{color:var(--ink)}
+  nav ul{display:flex;gap:32px;list-style:none;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+  nav ul a:hover{color:var(--gold)}
+  .nav-cta{background:var(--gold);color:#0b0d10;padding:10px 20px;border-radius:2px;font-weight:600;font-size:13px;letter-spacing:1px;text-transform:uppercase}
+  .menu-toggle{display:none;background:none;border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:2px;cursor:pointer}
+
+  /* HERO */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding-top:72px}
+  .hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,13,16,.55) 0%,rgba(11,13,16,.85) 60%,var(--bg) 100%),url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=2000&q=80') center/cover;filter:saturate(.85)}
+  .hero-content{position:relative;z-index:2;max-width:720px}
+  .eyebrow{color:var(--gold);font-size:12px;letter-spacing:4px;text-transform:uppercase;margin-bottom:20px}
+  .hero h1{font-size:clamp(48px,8vw,96px);line-height:1;margin-bottom:24px}
+  .hero p{color:var(--muted);font-size:18px;max-width:560px;margin-bottom:36px}
+  .btn{display:inline-block;padding:16px 32px;border-radius:2px;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:.2s;border:1px solid transparent}
+  .btn-gold{background:var(--gold);color:#0b0d10}
+  .btn-gold:hover{background:var(--gold-soft)}
+  .btn-ghost{border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+  /* SECTIONS */
+  section{padding:120px 0;border-top:1px solid var(--line)}
+  .section-head{margin-bottom:64px}
+  .section-head .eyebrow{margin-bottom:12px}
+  .section-head h2{font-size:clamp(36px,5vw,56px)}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+
+  /* BIO */
+  .bio-img{border:1px solid var(--line);border-radius:2px;overflow:hidden;aspect-ratio:4/5;background:#1a1f26}
+  .bio-img img{width:100%;height:100%;object-fit:cover}
+  .bio-text p{color:var(--muted);margin-bottom:20px}
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;padding-top:32px;border-top:1px solid var(--line)}
+  .facts div span{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+  .facts div strong{font-weight:400;font-size:15px;color:var(--ink)}
+
+  /* LOCATION */
+  .location-band{background:var(--panel);border:1px solid var(--line);padding:48px;display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap}
+  .location-band h3{font-size:32px}
+  .location-band .pulse{display:inline-block;width:10px;height:10px;background:var(--gold);border-radius:50%;margin-right:12px;box-shadow:0 0 0 0 rgba(201,162,74,.7);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(201,162,74,.6)}70%{box-shadow:0 0 0 16px rgba(201,162,74,0)}100%{box-shadow:0 0 0 0 rgba(201,162,74,0)}}
+
+  /* NEWS */
+  .news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:32px}
+  .news-card{background:var(--panel);border:1px solid var(--line);border-radius:2px;overflow:hidden;transition:.25s}
+  .news-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+  .news-card .thumb{aspect-ratio:16/10;background:#1a1f26;overflow:hidden}
+  .news-card .thumb img{width:100%;height:100%;object-fit:cover}
+  .news-card .body{padding:28px}
+  .news-card .date{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .news-card h3{font-size:24px;margin-bottom:12px;line-height:1.25}
+  .news-card p{color:var(--muted);font-size:15px}
+
+  /* PLANS */
+  .plans{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .plan{background:var(--panel);border:1px solid var(--line);padding:48px;border-radius:2px;position:relative;transition:.25s}
+  .plan:hover{border-color:var(--gold)}
+  .plan.featured{border-color:var(--gold);background:linear-gradient(180deg,#151a20 0%,var(--panel) 100%)}
+  .plan .tag{position:absolute;top:-1px;right:32px;background:var(--gold);color:#0b0d10;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;font-weight:600}
+  .plan h3{font-size:28px;margin-bottom:8px}
+  .plan .price{font-family:'Cormorant Garamond',serif;font-size:64px;color:var(--gold);margin:16px 0 8px}
+  .plan .price small{font-size:16px;color:var(--muted);font-family:'Inter',sans-serif}
+  .plan ul{list-style:none;margin:32px 0}
+  .plan ul li{padding:12px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:15px;display:flex;gap:12px}
+  .plan ul li::before{content:'—';color:var(--gold)}
+  .plan .btn{width:100%;text-align:center}
+
+  /* FORM */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .field{display:flex;flex-direction:column;gap:8px}
+  .field.full{grid-column:1/-1}
+  .field label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+  .field input,.field select,.field textarea{background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:14px 16px;font-family:inherit;font-size:15px;border-radius:2px;outline:none;transition:.2s}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+  .field textarea{resize:vertical;min-height:100px}
+
+  /* NEWSLETTER */
+  .newsletter{background:var(--panel);border:1px solid var(--line);padding:64px;text-align:center}
+  .newsletter h2{font-size:42px;margin-bottom:16px}
+  .newsletter p{color:var(--muted);max-width:480px;margin:0 auto 32px}
+  .newsletter form{display:flex;gap:12px;max-width:520px;margin:0 auto}
+  .newsletter input{flex:1;background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:16px;font-family:inherit;border-radius:2px;outline:none}
+  .newsletter input:focus{border-color:var(--gold)}
+
+  /* MODAL */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-backdrop.on{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);max-width:520px;width:100%;padding:48px;border-radius:2px;max-height:90vh;overflow-y:auto}
+  .modal h3{font-size:28px;margin-bottom:24px}
+  .modal .close{float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer}
+  .modal .close:hover{color:var(--gold)}
+  .modal p{color:var(--muted);margin-bottom:20px;font-size:15px}
+
+  footer{border-top:1px solid var(--line);padding:48px 0;color:var(--muted);font-size:13px;text-align:center}
+  footer a{color:var(--gold)}
+
+  .toast{position:fixed;bottom:32px;right:32px;background:var(--panel);border:1px solid var(--gold);color:var(--ink);padding:16px 24px;border-radius:2px;z-index:200;transform:translateY(200%);transition:.3s;font-size:14px}
+  .toast.on{transform:translateY(0)}
+
+  @media(max-width:860px){
+    nav ul{display:none}
+    nav ul.open{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:var(--panel);padding:24px;border-bottom:1px solid var(--line)}
+    .menu-toggle{display:block}
+    .grid-2,.plans,.form-grid,.facts{grid-template-columns:1fr}
+    .location-band{padding:32px}
+    .newsletter{padding:40px 24px}
+    .newsletter form{flex-direction:column}
+    section{padding:80px 0}
+    .modal{padding:32px 24px}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">JASON <span>MOMOA</span></div>
+    <nav>
+      <ul id="navlinks">
+        <li><a href="#bio">About</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#location">Location</a></li>
+        <li><a href="#meet">Meet &amp; Greet</a></li>
+      </ul>
+    </nav>
+    <div style="display:flex;gap:12px;align-items:center">
+      <a href="#meet" class="nav-cta">Book Now</a>
+      <button class="menu-toggle" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="wrap hero-content">
+    <div class="eyebrow">Official Fan Experience</div>
+    <h1>Meet the man<br/>behind the legend.</h1>
+    <p>An intimate, in-person meet &amp; greet experience with Jason Momoa — limited slots, real moments, real conversation.</p>
+    <a href="#meet" class="btn btn-gold">Reserve Your Spot</a>
+    <a href="#bio" class="btn btn-ghost" style="margin-left:12px">Learn More</a>
+  </div>
+</div>
+
+<!-- BIO -->
+<section id="bio">
+  <div class="wrap grid-2">
+    <div class="bio-img">
+      <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1000&q=80" alt="Jason Momoa portrait" />
+    </div>
+    <div class="bio-text">
+      <div class="section-head">
+        <div class="eyebrow">Biography</div>
+        <h2>A career forged in salt, steel, and story.</h2>
+      </div>
+      <p>Joseph Jason Namakaeha Momoa was born in Honolulu, Hawaiʻi, and raised between the islands and Iowa. His heritage — Native Hawaiian, Samoan, and German — has shaped a career defined by authenticity, physicality, and an unmistakable presence on screen.</p>
+      <p>He broke through as Ronon Dex in <em>Stargate: Atlantis</em>, then redefined a generation's idea of a warlord as Khal Drogo in <em>Game of Thrones</em>. As Arthur Curry / Aquaman in the DC Universe, he carried a franchise across two feature films and billions at the box office.</p>
+      <p>Off screen, Momoa is a surfer, a father, a cultural advocate for Native Hawaiian and Polynesian communities, and the founder of Mananalu — a water brand built around eliminating single-use plastic.</p>
+      <div class="facts">
+        <div><span>Born</span><strong>August 1, 1979 — Honolulu, HI</strong></div>
+        <div><span>Height</span><strong>6′ 4″ (193 cm)</strong></div>
+        <div><span>Known For</span><strong>Aquaman · Game of Thrones · Dune</strong></div>
+        <div><span>Notable</span><strong>See, Fast X, Chief of War</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section id="location" style="padding:80px 0">
+  <div class="wrap">
+    <div class="location-band">
+      <div>
+        <div class="eyebrow" style="margin-bottom:12px">Currently Based In</div>
+        <h3><span class="pulse"></span><span id="currentLocation">Loading…</span></h3>
+      </div>
+      <div style="color:var(--muted);max-width:420px;font-size:15px">
+        In-person meet &amp; greets are scheduled around Jason's current production and travel schedule. If your state isn't listed, you're welcome to travel to his current location.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Latest</div>
+      <h2>News &amp; Updates</h2>
+    </div>
+    <div class="news-grid" id="newsGrid">
+      <div style="color:var(--muted)">Loading updates…</div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section id="meet">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Meet &amp; Greet</div>
+      <h2>Choose your experience.</h2>
+      <p style="color:var(--muted);max-width:560px;margin-top:16px">Both tiers include a guaranteed in-person meet. Slots are limited per city. Payment is processed securely via Stripe — no gift cards, no third parties.</p>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <h3>The Standard</h3>
+        <div style="color:var(--muted);font-size:14px">For the true fan</div>
+        <div class="price">$300<small> USD</small></div>
+        <ul>
+          <li>Guaranteed in-person meet &amp; greet</li>
+          <li>One signed item</li>
+          <li>Professional photo with Jason</li>
+          <li>Scheduled when Jason is in your state</li>
+        </ul>
+        <button class="btn btn-ghost" onclick="openApply('standard', 300)">Apply — $300</button>
+      </div>
+      <div class="plan featured">
+        <div class="tag">Most Popular</div>
+        <h3>The Legend</h3>
+        <div style="color:var(--muted);font-size:14px">Full experience</div>
+        <div class="price">$500<small> USD</small></div>
+        <ul>
+          <li>Everything in Standard</li>
+          <li>Extended 1-on-1 time</li>
+          <li>Two signed items</li>
+          <li>Priority seating at fan events</li>
+          <li>Exclusive merchandise drop</li>
+        </ul>
+        <button class="btn btn-gold" onclick="openApply('legend', 500)">Apply — $500</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section style="padding:80px 0">
+  <div class="wrap">
+    <div class="newsletter">
+      <div class="eyebrow">Stay Close</div>
+      <h2>Get word first.</h2>
+      <p>Tour cities, drop dates, and meet &amp; greet openings — straight to your inbox before anyone else.</p>
+      <form id="newsletterForm">
+        <input type="email" id="newsletterEmail" placeholder="your@email.com" required />
+        <button type="submit" class="btn btn-gold">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© <span id="yr"></span> Jason Momoa Fan Experience. All rights reserved.</p>
+    <p style="margin-top:8px">Operated by an independent licensed fan events partner. <a href="#meet">Terms &amp; Refunds</a></p>
+  </div>
+</footer>
+
+<!-- APPLY MODAL -->
+<div class="modal-backdrop" id="applyModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('applyModal')">×</button>
+    <div id="applyStep1">
+      <h3>Apply — <span id="planName">Standard</span></h3>
+      <p>Fill in your details. You'll be asked to create an account (or log in) before payment, so you can upload verification and track your booking from your phone.</p>
+      <form id="applyForm" class="form-grid">
+        <div class="field full"><label>Full Name</label><input required name="full_name" /></div>
+        <div class="field"><label>Email</label><input required type="email" name="email" /></div>
+        <div class="field"><label>Phone</label><input required name="phone" /></div>
+        <div class="field"><label>Your State</label><input required name="state" placeholder="e.g. California" /></div>
+        <div class="field"><label>Preferred City</label><input name="city" placeholder="Optional" /></div>
+        <div class="field full"><label>Anything we should know?</label><textarea name="notes" placeholder="Optional"></textarea></div>
+        <input type="hidden" name="plan" id="planInput" />
+        <div class="field full"><button type="submit" class="btn btn-gold" style="width:100%">Continue to Payment</button></div>
+      </form>
+    </div>
+    <div id="applyStep2" style="display:none">
+      <h3>Verify &amp; Pay</h3>
+      <p id="payMessage">Redirecting to secure checkout…</p>
+      <button class="btn btn-gold" id="payBtn" style="width:100%">Pay Securely with Stripe</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-backdrop" id="authModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('authModal')">×</button>
+    <h3 id="authTitle">Create your account</h3>
+    <p>You'll use this to log in on your phone and manage your booking.</p>
+    <form id="authForm" class="form-grid">
+      <div class="field full"><label>Email</label><input required type="email" id="authEmail" /></div>
+      <div class="field full"><label>Password</label><input required type="password" id="authPass" minlength="6" /></div>
+      <div class="field full" id="nameField"><label>Full Name</label><input type="text" id="authName" /></div>
+      <div class="field full"><button type="submit" class="btn btn-gold" style="width:100%" id="authSubmit">Sign Up &amp; Pay</button></div>
+      <div class="field full" style="text-align:center;color:var(--muted);font-size:13px">
+        <span id="authSwitchText">Already have an account?</span>
+        <a href="#" id="authSwitch" style="color:var(--gold)">Log in</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ACCOUNT MODAL -->
+<div class="modal-backdrop" id="accountModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('accountModal')">×</button>
+    <h3>Your Booking</h3>
+    <div id="accountBody">Loading…</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONFIG — replace with your real values
+   ============================================================ */
+const SUPABASE_URL  = 'https://YOUR-PROJECT.supabase.co';
+const SUPABASE_ANON = 'YOUR-ANON-KEY';           // safe in client WITH RLS
+const STRIPE_PK     = 'pk_test_YOUR_STRIPE_PK';  // publishable key
+const CHECKOUT_ENDPOINT = '/api/create-checkout-session'; // your server
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const stripe = Stripe(STRIPE_PK);
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let currentPlan = { name: 'standard', price: 300 };
+let pendingBookingId = null;
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.getElementById('yr').textContent = new Date().getFullYear();
+loadNews();
+loadLocation();
+checkSession();
+
+async function loadLocation(){
+  const { data } = await sb.from('settings').select('current_location').eq('id',1).single();
+  document.getElementById('currentLocation').textContent = data?.current_location || 'Honolulu, Hawaii';
+}
+
+async function loadNews(){
+  const { data, error } = await sb.from('news')
+    .select('*').eq('published', true)
+    .order('created_at', { ascending: false }).limit(6);
+  const grid = document.getElementById('newsGrid');
+  if (error || !data || !data.length){
+    grid.innerHTML = '<div style="color:var(--muted)">No updates yet.</div>';
+    return;
+  }
+  grid.innerHTML = data.map(n => `
+    <article class="news-card">
+      ${n.image_url ? `<div class="thumb"><img src="${n.image_url}" alt="" loading="lazy"/></div>` : ''}
+      <div class="body">
+        <div class="date">${new Date(n.created_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</div>
+        <h3>${escapeHtml(n.title)}</h3>
+        <p>${escapeHtml(n.body).slice(0,200)}${n.body.length>200?'…':''}</p>
+      </div>
+    </article>`).join('');
+}
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+function openModal(id){ document.getElementById(id).classList.add('on'); }
+function closeModal(id){ document.getElementById(id).classList.remove('on'); }
+
+function openApply(plan, price){
+  currentPlan = { name: plan, price };
+  document.getElementById('planName').textContent = plan === 'legend' ? 'The Legend' : 'The Standard';
+  document.getElementById('planInput').value = plan;
+  document.getElementById('applyStep1').style.display = 'block';
+  document.getElementById('applyStep2').style.display = 'none';
+  openModal('applyModal');
+}
+
+/* ============================================================
+   APPLY FLOW
+   ============================================================ */
+document.getElementById('applyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const payload = Object.fromEntries(fd.entries());
+  payload.plan = currentPlan.name;
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session){
+    // stash and ask for auth
+    window._pendingApplication = payload;
+    document.getElementById('applyStep1').style.display = 'none';
+    document.getElementById('applyStep2').style.display = 'block';
+    document.getElementById('payMessage').textContent = 'Create an account or log in to continue to payment.';
+    document.getElementById('payBtn').textContent = 'Create Account / Log In';
+    document.getElementById('payBtn').onclick = () => { closeModal('applyModal'); openModal('authModal'); };
+    return;
+  }
+  await createBookingAndCheckout(payload, session.user);
+});
+
+async function createBookingAndCheckout(payload, user){
+  const { data, error } = await sb.from('bookings').insert({
+    user_id: user.id,
+    plan: payload.plan,
+    full_name: payload.full_name,
+    email: payload.email,
+    phone: payload.phone,
+    state: payload.state,
+    notes: payload.notes || null
+  }).select().single();
+
+  if (error){ toast('Could not save booking: ' + error.message); return; }
+  pendingBookingId = data.id;
+
+  // also upsert profile
+  await sb.from('profiles').upsert({
+    id: user.id, full_name: payload.full_name, email: payload.email,
+    phone: payload.phone, state: payload.state, plan: payload.plan
+  });
+
+  document.getElementById('applyStep1').style.display = 'none';
+  document.getElementById('applyStep2').style.display = 'block';
+  document.getElementById('payMessage').textContent = `Ready to pay $${currentPlan.price} via Stripe.`;
+  const btn = document.getElementById('payBtn');
+  btn.textContent = `Pay $${currentPlan.price} Securely`;
+  btn.onclick = startCheckout;
+}
+
+/* ============================================================
+   STRIPE CHECKOUT
+   Requires a small server endpoint (Node/Express/Cloudflare Worker).
+   See notes at bottom of file.
+   ============================================================ */
+async function startCheckout(){
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session){ toast('Please log in first.'); return; }
+
+  const res = await fetch(CHECKOUT_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+    body: JSON.stringify({
+      booking_id: pendingBookingId,
+      plan: currentPlan.name,
+      email: session.user.email
+    })
+  });
+  const json = await res.json();
+  if (json.url){ window.location.href = json.url; }
+  else { toast('Checkout error: ' + (json.error || 'unknown')); }
+}
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+let authMode = 'signup';
+document.getElementById('authSwitch').addEventListener('click', (e) => {
+  e.preventDefault();
+  authMode = authMode === 'signup' ? 'login' : 'signup';
+  document.getElementById('authTitle').textContent = authMode === 'signup' ? 'Create your account' : 'Welcome back';
+  document.getElementById('authSubmit').textContent = authMode === 'signup' ? 'Sign Up & Pay' : 'Log In & Pay';
+  document.getElementById('authSwitchText').textContent = authMode === 'signup' ? 'Already have an account?' : 'Need an account?';
+  document.getElementById('authSwitch').textContent = authMode === 'signup' ? 'Log in' : 'Sign up';
+  document.getElementById('nameField').style.display = authMode === 'signup' ? 'flex' : 'none';
+});
+
+document.getElementById('authForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('authEmail').value.trim();
+  const pass = document.getElementById('authPass').value;
+  const name = document.getElementById('authName').value.trim();
+
+  let result;
+  if (authMode === 'signup'){
+    result = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
+  } else {
+    result = await sb.auth.signInWithPassword({ email, password: pass });
+  }
+  if (result.error){ toast(result.error.message); return; }
+
+  const user = result.data.user;
+  if (!user){ toast('Check your email to confirm, then log in.'); return; }
+
+  // resume pending application
+  if (window._pendingApplication){
+    const payload = window._pendingApplication;
+    window._pendingApplication = null;
+    closeModal('authModal');
+    await createBookingAndCheckout(payload, user);
+    openModal('applyModal');
+    return;
+  }
+  closeModal('authModal');
+  toast('Signed in.');
+  checkSession();
+});
+
+async function checkSession(){
+  const { data: { session } } = await sb.auth.getSession();
+  const cta = document.querySelector('.nav-cta');
+  if (session){
+    cta.textContent = 'My Booking';
+    cta.onclick = (e) => { e.preventDefault(); openAccount(); };
+  } else {
+    cta.textContent = 'Book Now';
+    cta.href = '#meet';
+    cta.onclick = null;
+  }
+}
+
+async function openAccount(){
+  openModal('accountModal');
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+
+  const { data: bookings } = await sb.from('bookings').select('*')
+    .eq('user_id', session.user.id)
+    .order('created_at', { ascending: false }).limit(1);
+
+  const b = bookings?.[0];
+  if (!b){
+    document.getElementById('accountBody').innerHTML = '<p>No booking yet.</p>';
+    return;
+  }
+
+  const { data: uploads } = await sb.from('uploads').select('*').eq('booking_id', b.id);
+
+  document.getElementById('accountBody').innerHTML = `
+    <p><strong>Plan:</strong> ${escapeHtml(b.plan)}</p>
+    <p><strong>Status:</strong> ${escapeHtml(b.status)}</p>
+    <p><strong>State:</strong> ${escapeHtml(b.state || '')}</p>
+    ${b.status !== 'paid'
+      ? `<p style="margin-top:16px;color:var(--muted)">Your booking will unlock after payment.</p>`
+      : `<p style="margin-top:16px;color:var(--gold)">Payment confirmed. Bring ID matching your booking name to the event.</p>`}
+    <hr style="border-color:var(--line);margin:24px 0"/>
+    <p style="font-size:13px;color:var(--muted)">This is your booking reference. Show it at the door.</p>
+    <p style="font-family:monospace;font-size:12px;color:var(--muted);word-break:break-all">${b.id}</p>
+    <button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="sb.auth.signOut().then(()=>location.reload())">Log Out</button>
+  `;
+}
+
+/* ============================================================
+   NEWSLETTER
+   ============================================================ */
+document.getElementById('newsletterForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('newsletterEmail').value.trim();
+  const { error } = await sb.from('newsletter').insert({ email });
+  if (error && !error.message.includes('duplicate')){ toast(error.message); return; }
+  toast('You\'re on the list.');
+  e.target.reset();
+});
+
+/* ============================================================
+   UTIL
+   ============================================================ */
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'), 3200);
+}
+
+// handle return from Stripe
+if (new URLSearchParams(location.search).get('paid') === '1'){
+  toast('Payment successful. Your booking is confirmed.');
+  history.replaceState({}, '', location.pathname);
+}
+</script>
+</body>
+</html>
