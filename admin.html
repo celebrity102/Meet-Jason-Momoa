@@ -9,50 +9,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root{
-    --bg:#0a0b0d; --panel:#101215; --panel-2:#141719;
-    --line:#1c2024; --line-2:#262b30;
-    --ink:#eae7e0; --muted:#7d858f; --muted-2:#5a6169;
-    --gold:#c9a24a; --gold-soft:#e0c47e; --gold-dim:rgba(201,162,74,.5);
-    --green:#6ec48f; --red:#e07a7a; --amber:#d4b05c;
-  }
+  :root{--bg:#0a0b0d;--panel:#101215;--panel-2:#141719;--line:#1c2024;--line-2:#262b30;--ink:#eae7e0;--muted:#7d858f;--muted-2:#5a6169;--gold:#c9a24a;--gold-soft:#e0c47e;--gold-dim:rgba(201,162,74,.5);--green:#6ec48f;--red:#e07a7a;--amber:#d4b05c}
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    background:var(--bg);color:var(--ink);
-    font-family:'Inter',sans-serif;font-weight:300;font-size:14px;
-    line-height:1.6;letter-spacing:.01em;-webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:.005em;line-height:1.15}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.15}
   a{color:inherit;text-decoration:none}
   button{font-family:inherit;cursor:pointer}
   input,select,textarea{font-family:inherit}
 
-  /* LOGIN */
   .login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;z-index:10}
-  .login-card{
-    background:var(--panel);border:1px solid var(--line-2);
-    padding:64px 56px;max-width:440px;width:100%;position:relative;
-  }
-  .login-card::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
-  }
+  .login-card{background:var(--panel);border:1px solid var(--line-2);padding:64px 56px;max-width:440px;width:100%;position:relative}
+  .login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
   .login-card h1{font-size:36px;margin-bottom:8px}
-  .login-card .sub{color:var(--muted);font-size:13px;margin-bottom:36px;letter-spacing:.04em}
+  .login-card .sub{color:var(--muted);font-size:13px;margin-bottom:36px}
   .field{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
-  .field label{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:400}
-  .field input,.field select,.field textarea{
-    background:var(--bg);border:1px solid var(--line-2);color:var(--ink);
-    padding:13px 15px;font-size:14px;outline:none;transition:.25s;
-  }
-  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);background:#0d0f11}
+  .field label{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+  .field input,.field select,.field textarea{background:var(--bg);border:1px solid var(--line-2);color:var(--ink);padding:13px 15px;font-size:14px;outline:none;transition:.25s}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
 
-  .btn{
-    display:inline-block;padding:13px 26px;border:1px solid transparent;
-    font-weight:500;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
-    transition:.25s;background:transparent;color:var(--ink);
-  }
+  .btn{display:inline-block;padding:13px 26px;border:1px solid transparent;font-weight:500;font-size:11px;letter-spacing:.24em;text-transform:uppercase;transition:.25s;background:transparent;color:var(--ink)}
   .btn-gold{background:var(--gold);color:#0a0b0d;border-color:var(--gold)}
   .btn-gold:hover{background:var(--gold-soft);border-color:var(--gold-soft)}
   .btn-ghost{border-color:var(--line-2);color:var(--ink)}
@@ -61,96 +36,55 @@
   .btn-danger:hover{background:rgba(224,122,122,.1)}
   .btn-sm{padding:8px 14px;font-size:10px;letter-spacing:.2em}
 
-  /* APP */
   .app{display:none;min-height:100vh}
   .app.on{display:block}
-
-  header.topbar{
-    position:sticky;top:0;z-index:20;
-    background:rgba(10,11,13,.85);
-    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-    border-bottom:1px solid var(--line);
-  }
+  header.topbar{position:sticky;top:0;z-index:20;background:rgba(10,11,13,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
   .topbar-inner{display:flex;align-items:center;justify-content:space-between;height:70px;padding:0 32px}
   .brand{font-family:'Cormorant Garamond',serif;font-size:19px;letter-spacing:.28em;text-transform:uppercase}
   .brand span{color:var(--gold)}
-  .topbar .who{color:var(--muted);font-size:12px;letter-spacing:.14em}
-  .topbar .who strong{color:var(--ink);font-weight:400}
   .topbar-right{display:flex;gap:14px;align-items:center}
 
   .shell{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 70px)}
-  aside{
-    border-right:1px solid var(--line);
-    padding:28px 20px;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto;
-  }
-  .nav-link{
-    display:flex;align-items:center;justify-content:space-between;gap:10px;
-    padding:12px 14px;color:var(--muted);font-size:12.5px;letter-spacing:.14em;
-    text-transform:uppercase;font-weight:400;transition:.2s;cursor:pointer;
-    border-left:2px solid transparent;margin-bottom:4px;
-  }
+  aside{border-right:1px solid var(--line);padding:28px 20px;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto}
+  .nav-link{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;color:var(--muted);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;transition:.2s;cursor:pointer;border-left:2px solid transparent;margin-bottom:4px}
   .nav-link:hover{color:var(--ink);background:var(--panel)}
   .nav-link.active{color:var(--gold);border-left-color:var(--gold);background:var(--panel)}
-  .nav-link .count{
-    font-size:10px;background:var(--panel-2);color:var(--muted);
-    padding:2px 8px;border-radius:2px;font-weight:500;letter-spacing:.05em;
-  }
+  .nav-link .count{font-size:10px;background:var(--panel-2);color:var(--muted);padding:2px 8px;font-weight:500}
   .nav-link.active .count{background:rgba(201,162,74,.15);color:var(--gold)}
-  .nav-section{
-    font-size:10px;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--muted-2);margin:24px 14px 12px;
-  }
+  .nav-section{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted-2);margin:24px 14px 12px}
 
   main{padding:36px 40px 80px;max-width:100%;overflow-x:hidden}
   .page-head{margin-bottom:32px}
-  .page-head h2{font-size:40px;margin-bottom:6px;letter-spacing:-.005em}
+  .page-head h2{font-size:40px;margin-bottom:6px}
   .page-head p{color:var(--muted);font-size:13.5px}
 
-  .toolbar{
-    display:flex;gap:12px;flex-wrap:wrap;align-items:center;
-    margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--line);
-  }
-  .search{
-    flex:1;min-width:240px;background:var(--panel);border:1px solid var(--line-2);
-    color:var(--ink);padding:11px 14px;font-size:13.5px;outline:none;
-  }
+  .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+  .search{flex:1;min-width:240px;background:var(--panel);border:1px solid var(--line-2);color:var(--ink);padding:11px 14px;font-size:13.5px;outline:none}
   .search:focus{border-color:var(--gold)}
-  .filter-select{
-    background:var(--panel);border:1px solid var(--line-2);color:var(--ink);
-    padding:11px 14px;font-size:12.5px;outline:none;letter-spacing:.04em;
-  }
+  .filter-select{background:var(--panel);border:1px solid var(--line-2);color:var(--ink);padding:11px 14px;font-size:12.5px;outline:none}
   .filter-select:focus{border-color:var(--gold)}
 
   .panel{display:none}
   .panel.on{display:block}
 
-  /* STATS */
   .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;margin-bottom:40px;border:1px solid var(--line-2)}
-  .stat{padding:26px 28px;border-right:1px solid var(--line-2);position:relative}
+  .stat{padding:26px 28px;border-right:1px solid var(--line-2)}
   .stat:last-child{border-right:none}
   .stat .label{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-  .stat .value{font-family:'Cormorant Garamond',serif;font-size:42px;line-height:1;color:var(--ink);font-weight:500}
+  .stat .value{font-family:'Cormorant Garamond',serif;font-size:42px;line-height:1;font-weight:500}
   .stat .value.gold{color:var(--gold)}
 
-  /* TABLE */
-  .table-wrap{background:var(--panel);border:1px solid var(--line);overflow:hidden}
+  .table-wrap{background:var(--panel);border:1px solid var(--line);overflow:hidden;overflow-x:auto}
   table{width:100%;border-collapse:collapse;font-size:13.5px}
   thead{background:var(--panel-2);border-bottom:1px solid var(--line-2)}
-  th{
-    text-align:left;padding:14px 18px;font-size:10.5px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--muted);font-weight:500;
-    white-space:nowrap;
-  }
-  td{padding:16px 18px;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:middle}
+  th{text-align:left;padding:14px 18px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap}
+  td{padding:16px 18px;border-bottom:1px solid var(--line);vertical-align:middle}
   tbody tr:hover{background:rgba(255,255,255,.015)}
   tbody tr:last-child td{border-bottom:none}
   .cell-muted{color:var(--muted)}
   .cell-mono{font-family:ui-monospace,monospace;font-size:11.5px;color:var(--muted-2);word-break:break-all;max-width:200px}
 
-  .status{
-    display:inline-block;font-size:10px;letter-spacing:.2em;
-    text-transform:uppercase;padding:4px 10px;font-weight:500;
-  }
+  .status{display:inline-block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:4px 10px;font-weight:500}
   .status.paid{background:rgba(110,196,143,.12);color:var(--green)}
   .status.pending_verification{background:rgba(212,176,92,.12);color:var(--amber)}
   .status.pending_payment{background:rgba(224,122,122,.1);color:var(--red)}
@@ -159,77 +93,40 @@
 
   .actions{display:flex;gap:6px;flex-wrap:wrap}
 
-  /* GIFT CARDS */
   .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-  .gc-card{
-    background:var(--panel);border:1px solid var(--line-2);
-    overflow:hidden;transition:.25s;position:relative;
-  }
+  .gc-card{background:var(--panel);border:1px solid var(--line-2);overflow:hidden;transition:.25s}
   .gc-card:hover{border-color:var(--gold-dim)}
-  .gc-thumb{
-    aspect-ratio:16/10;background:#0d0f11;overflow:hidden;
-    cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
-  }
+  .gc-thumb{aspect-ratio:16/10;background:#0d0f11;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .gc-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
   .gc-card:hover .gc-thumb img{transform:scale(1.03)}
   .gc-thumb .no-img{color:var(--muted-2);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
   .gc-body{padding:20px 22px}
-  .gc-body .row{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;font-size:12.5px}
-  .gc-body .row .k{color:var(--muted);letter-spacing:.06em}
-  .gc-body .row .v{color:var(--ink);font-weight:400;text-align:right}
-  .gc-body .type{
-    font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:12px;
-    display:flex;align-items:center;gap:10px;
-  }
+  .gc-body .type{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
   .gc-body .value{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);margin-bottom:14px}
-  .gc-actions{display:flex;gap:6px;padding-top:14px;border-top:1px solid var(--line);margin-top:14px}
+  .gc-body .row{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;font-size:12.5px}
+  .gc-body .row .k{color:var(--muted)}
+  .gc-body .row .v{color:var(--ink);text-align:right}
+  .gc-actions{display:flex;gap:6px;padding-top:14px;border-top:1px solid var(--line);margin-top:14px;flex-wrap:wrap}
 
-  /* NEWS ADMIN */
-  .news-form{
-    background:var(--panel);border:1px solid var(--line-2);
-    padding:36px 32px;margin-bottom:32px;
-  }
+  .news-form{background:var(--panel);border:1px solid var(--line-2);padding:36px 32px;margin-bottom:32px}
   .news-form h3{font-size:24px;margin-bottom:24px}
   .news-list{display:grid;gap:14px}
-  .news-row{
-    background:var(--panel);border:1px solid var(--line);
-    padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
-  }
+  .news-row{background:var(--panel);border:1px solid var(--line);padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
   .news-row .meta{flex:1}
-  .news-row h4{font-size:19px;margin-bottom:6px;font-weight:500}
+  .news-row h4{font-size:19px;margin-bottom:6px}
   .news-row .date{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
   .news-row .excerpt{color:var(--muted);font-size:13px;max-width:600px}
 
-  /* MODAL */
-  .modal-backdrop{
-    position:fixed;inset:0;background:rgba(5,6,7,.88);
-    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-    z-index:100;display:none;align-items:center;justify-content:center;padding:24px;
-  }
+  .modal-backdrop{position:fixed;inset:0;background:rgba(5,6,7,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:24px}
   .modal-backdrop.on{display:flex}
-  .modal{
-    background:var(--panel);border:1px solid var(--line-2);
-    max-width:900px;width:100%;max-height:calc(100vh - 48px);
-    overflow-y:auto;padding:44px 40px;position:relative;
-  }
-  .modal.narrow{max-width:520px}
-  .modal .close{
-    position:absolute;top:18px;right:18px;background:none;border:none;
-    color:var(--muted);font-size:26px;cursor:pointer;line-height:1;
-    width:34px;height:34px;display:flex;align-items:center;justify-content:center;
-  }
+  .modal{background:var(--panel);border:1px solid var(--line-2);max-width:900px;width:100%;max-height:calc(100vh - 48px);overflow-y:auto;padding:44px 40px;position:relative}
+  .modal .close{position:absolute;top:18px;right:18px;background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1;width:34px;height:34px;display:flex;align-items:center;justify-content:center}
   .modal .close:hover{color:var(--gold)}
   .modal h3{font-size:28px;margin-bottom:20px}
   .modal img.preview{width:100%;height:auto;border:1px solid var(--line-2);margin-bottom:20px;background:#0a0b0d}
 
-  .empty{color:var(--muted);text-align:center;padding:60px 20px;font-size:13.5px;letter-spacing:.04em}
-
-  .toast{
-    position:fixed;bottom:28px;right:28px;background:var(--panel);
-    border:1px solid var(--gold-dim);color:var(--ink);
-    padding:16px 24px;z-index:200;transform:translateY(200%);
-    transition:.4s cubic-bezier(.2,.7,.2,1);font-size:13.5px;max-width:90vw;
-  }
+  .empty{color:var(--muted);text-align:center;padding:60px 20px;font-size:13.5px}
+  .toast{position:fixed;bottom:28px;right:28px;background:var(--panel);border:1px solid var(--gold-dim);color:var(--ink);padding:16px 24px;z-index:200;transform:translateY(200%);transition:.4s;font-size:13.5px;max-width:90vw}
   .toast.on{transform:translateY(0)}
   .toast.err{border-color:rgba(224,122,122,.6)}
 
@@ -241,27 +138,23 @@
     .nav-link.active{border-left:none;border-bottom-color:var(--gold)}
     main{padding:24px 20px 60px}
     .topbar-inner{padding:0 20px}
-    .topbar .who{display:none}
     .modal{padding:32px 22px}
   }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN (token only) -->
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Admin</div>
     <h1>Control Room</h1>
-    <div class="sub">Sign in to manage bookings, gift cards, and updates.</div>
+    <div class="sub">Enter the access token to continue.</div>
     <form id="loginForm">
-      <div class="field"><label>Email</label><input required type="email" id="loginEmail" /></div>
-      <div class="field"><label>Password</label><input required type="password" id="loginPass" /></div>
-      <button type="submit" class="btn btn-gold" style="width:100%;margin-top:8px" id="loginBtn">Sign In</button>
+      <div class="field"><label>Access Token</label><input required type="password" id="tokenInput" placeholder="••••••••••••" autocomplete="off" /></div>
+      <button type="submit" class="btn btn-gold" style="width:100%;margin-top:8px">Unlock</button>
     </form>
-    <div style="margin-top:22px;font-size:12px;color:var(--muted-2);text-align:center">
-      Restricted access — authorized personnel only.
-    </div>
+    <div style="margin-top:22px;font-size:12px;color:var(--muted-2);text-align:center">Restricted access.</div>
   </div>
 </div>
 
@@ -271,7 +164,6 @@
     <div class="topbar-inner">
       <div class="brand">Momoa <span>/ Admin</span></div>
       <div class="topbar-right">
-        <div class="who">Signed in as <strong id="adminEmail">—</strong></div>
         <button class="btn btn-ghost btn-sm" onclick="logout()">Log Out</button>
       </div>
     </div>
@@ -284,7 +176,6 @@
       <div class="nav-section">Operations</div>
       <div class="nav-link" data-panel="bookings">Bookings <span class="count" id="cntBookings">0</span></div>
       <div class="nav-link" data-panel="giftcards">Gift Cards <span class="count" id="cntGiftcards">0</span></div>
-      <div class="nav-link" data-panel="profiles">Sign-ups <span class="count" id="cntProfiles">0</span></div>
       <div class="nav-link" data-panel="newsletter">Newsletter <span class="count" id="cntNewsletter">0</span></div>
       <div class="nav-section">Content</div>
       <div class="nav-link" data-panel="news">News Manager <span class="count" id="cntNews">0</span></div>
@@ -293,23 +184,16 @@
     </aside>
 
     <main>
-      <!-- DASHBOARD -->
       <div class="panel on" id="panel-dashboard">
-        <div class="page-head">
-          <h2>Dashboard</h2>
-          <p>Snapshot of activity across the fan experience.</p>
-        </div>
+        <div class="page-head"><h2>Dashboard</h2><p>Snapshot of activity.</p></div>
         <div class="stats">
           <div class="stat"><div class="label">Total Bookings</div><div class="value" id="statBookings">—</div></div>
-          <div class="stat"><div class="label">Pending Gift Cards</div><div class="value gold" id="statPending">—</div></div>
+          <div class="stat"><div class="label">Pending Review</div><div class="value gold" id="statPending">—</div></div>
           <div class="stat"><div class="label">Confirmed</div><div class="value" id="statPaid">—</div></div>
-          <div class="stat"><div class="label">Sign-ups</div><div class="value" id="statProfiles">—</div></div>
           <div class="stat"><div class="label">Subscribers</div><div class="value" id="statNewsletter">—</div></div>
           <div class="stat"><div class="label">News Posts</div><div class="value" id="statNews">—</div></div>
         </div>
-        <div class="page-head" style="margin-bottom:20px">
-          <h3 style="font-size:22px">Recent Bookings</h3>
-        </div>
+        <div class="page-head" style="margin-bottom:20px"><h3 style="font-size:22px">Recent Bookings</h3></div>
         <div class="table-wrap">
           <table id="recentBookingsTable">
             <thead><tr><th>Name</th><th>Email</th><th>Plan</th><th>Status</th><th>Date</th></tr></thead>
@@ -318,12 +202,8 @@
         </div>
       </div>
 
-      <!-- BOOKINGS -->
       <div class="panel" id="panel-bookings">
-        <div class="page-head">
-          <h2>Bookings</h2>
-          <p>All reservations, applications, and verification statuses.</p>
-        </div>
+        <div class="page-head"><h2>Bookings</h2><p>All reservations and verification statuses.</p></div>
         <div class="toolbar">
           <input class="search" id="searchBookings" placeholder="Search name, email, phone, state…" />
           <select class="filter-select" id="filterStatus">
@@ -338,70 +218,37 @@
             <option value="standard">Standard</option>
             <option value="legend">Legend</option>
           </select>
-          <button class="btn btn-ghost btn-sm" onclick="refreshBookings()">Refresh</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadBookings()">Refresh</button>
         </div>
         <div class="table-wrap">
           <table id="bookingsTable">
-            <thead>
-              <tr>
-                <th>Name</th><th>Email</th><th>Phone</th><th>State</th>
-                <th>Plan</th><th>Status</th><th>Date</th><th></th>
-              </tr>
-            </thead>
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>State</th><th>Plan</th><th>Status</th><th>Date</th><th></th></tr></thead>
             <tbody><tr><td colspan="8" class="empty">Loading…</td></tr></tbody>
           </table>
         </div>
       </div>
 
-      <!-- GIFT CARDS -->
       <div class="panel" id="panel-giftcards">
-        <div class="page-head">
-          <h2>Gift Cards</h2>
-          <p>Uploaded gift cards awaiting verification. Click any image to view full size.</p>
-        </div>
+        <div class="page-head"><h2>Gift Cards</h2><p>Uploaded gift cards awaiting verification.</p></div>
         <div class="toolbar">
-          <input class="search" id="searchGiftcards" placeholder="Search by email, type, or booking ID…" />
+          <input class="search" id="searchGiftcards" placeholder="Search by email, type, booking ID…" />
           <select class="filter-select" id="filterGcStatus">
             <option value="">All</option>
             <option value="pending_verification">Pending</option>
             <option value="verified">Verified</option>
             <option value="rejected">Rejected</option>
           </select>
-          <button class="btn btn-ghost btn-sm" onclick="refreshGiftcards()">Refresh</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadUploads()">Refresh</button>
         </div>
-        <div class="cards-grid" id="giftcardsGrid">
-          <div class="empty" style="grid-column:1/-1">Loading…</div>
-        </div>
+        <div class="cards-grid" id="giftcardsGrid"><div class="empty" style="grid-column:1/-1">Loading…</div></div>
       </div>
 
-      <!-- PROFILES -->
-      <div class="panel" id="panel-profiles">
-        <div class="page-head">
-          <h2>Sign-ups</h2>
-          <p>Everyone who created an account.</p>
-        </div>
-        <div class="toolbar">
-          <input class="search" id="searchProfiles" placeholder="Search name, email, state…" />
-          <button class="btn btn-ghost btn-sm" onclick="refreshProfiles()">Refresh</button>
-        </div>
-        <div class="table-wrap">
-          <table id="profilesTable">
-            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>State</th><th>Plan</th><th>Joined</th></tr></thead>
-            <tbody><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- NEWSLETTER -->
       <div class="panel" id="panel-newsletter">
-        <div class="page-head">
-          <h2>Newsletter</h2>
-          <p>Email subscribers.</p>
-        </div>
+        <div class="page-head"><h2>Newsletter</h2><p>Email subscribers.</p></div>
         <div class="toolbar">
           <input class="search" id="searchNewsletter" placeholder="Search email…" />
           <button class="btn btn-ghost btn-sm" onclick="copyEmails()">Copy All Emails</button>
-          <button class="btn btn-ghost btn-sm" onclick="refreshNewsletter()">Refresh</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadNewsletter()">Refresh</button>
         </div>
         <div class="table-wrap">
           <table id="newsletterTable">
@@ -411,13 +258,8 @@
         </div>
       </div>
 
-      <!-- NEWS -->
       <div class="panel" id="panel-news">
-        <div class="page-head">
-          <h2>News Manager</h2>
-          <p>Publish updates. They appear on the homepage instantly.</p>
-        </div>
-
+        <div class="page-head"><h2>News Manager</h2><p>Publish updates. They appear on the homepage instantly.</p></div>
         <div class="news-form">
           <h3 id="newsFormTitle">New Post</h3>
           <form id="newsForm">
@@ -427,7 +269,7 @@
             <div class="field"><label>Body</label><textarea required id="newsBody" rows="6"></textarea></div>
             <div class="field" style="flex-direction:row;align-items:center;gap:12px">
               <input type="checkbox" id="newsPublished" checked style="width:auto" />
-              <label for="newsPublished" style="color:var(--muted);letter-spacing:.04em;text-transform:none;font-size:13px">Publish immediately</label>
+              <label for="newsPublished" style="color:var(--muted);text-transform:none;letter-spacing:.04em;font-size:13px">Publish immediately</label>
             </div>
             <div style="display:flex;gap:10px;margin-top:12px">
               <button type="submit" class="btn btn-gold" id="newsSubmitBtn">Publish</button>
@@ -435,27 +277,18 @@
             </div>
           </form>
         </div>
-
-        <div class="page-head" style="margin-bottom:14px">
-          <h3 style="font-size:20px">Published &amp; Drafts</h3>
-        </div>
-        <div class="news-list" id="newsList">
-          <div class="empty">Loading…</div>
-        </div>
+        <div class="page-head" style="margin-bottom:14px"><h3 style="font-size:20px">Published &amp; Drafts</h3></div>
+        <div class="news-list" id="newsList"><div class="empty">Loading…</div></div>
       </div>
 
-      <!-- SETTINGS -->
       <div class="panel" id="panel-settings">
-        <div class="page-head">
-          <h2>Settings</h2>
-          <p>Site configuration.</p>
-        </div>
+        <div class="page-head"><h2>Settings</h2><p>Site configuration.</p></div>
         <div class="news-form">
           <h3>Current Location</h3>
           <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Shown on the homepage "Currently Based" band.</p>
           <form id="settingsForm">
-            <div class="field"><label>Location</label><input id="settingLocation" placeholder="Honolulu, Hawaiʻi" /></div>
-            <button type="submit" class="btn btn-gold" style="margin-top:8px">Save</button>
+            <div class="field"><label>Location</label><input id="settingLocation" placeholder="Honolulu, Hawaiʻi" /></form>
+            <button type="submit" class="btn btn-gold" style="margin-top:8px" form="settingsForm">Save</button>
           </form>
         </div>
       </div>
@@ -463,9 +296,8 @@
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-backdrop" id="modal">
-  <div class="modal" id="modalContent">
+  <div class="modal">
     <button class="close" onclick="closeModal()">×</button>
     <div id="modalBody"></div>
   </div>
@@ -475,54 +307,46 @@
 
 <script>
 /* ============================================================
-   SUPABASE CONFIG
+   CONFIG
    ============================================================ */
 const SUPABASE_URL  = 'https://fybwlumglknhjbjmqrtu.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5YndsdW1nbGtuaGpiam1xcnR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxODgyNjYsImV4cCI6MjEwNDc2NDI2Nn0.63-zUg7loxDcONGxv7Fi7ogTPXvvonOlxh0G_7fRYk';
 
+/* 🔑 CHANGE THIS TO YOUR OWN SECRET STRING */
+const ADMIN_TOKEN = 'MOMOA-ADMIN-2025';
+
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 let ALL_BOOKINGS = [];
-let ALL_PROFILES = [];
 let ALL_NEWSLETTER = [];
 let ALL_UPLOADS = [];
 let ALL_NEWS = [];
-let SORTED_UPLOADS = [];
 
 /* ============================================================
-   AUTH
+   LOGIN
    ============================================================ */
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
+document.getElementById('loginForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  const btn = document.getElementById('loginBtn');
-  btn.disabled = true; btn.textContent = 'Signing in…';
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass = document.getElementById('loginPass').value;
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.disabled = false; btn.textContent = 'Sign In';
-  if (error){ toast(error.message, true); return; }
-  showApp(data.user);
+  const t = document.getElementById('tokenInput').value.trim();
+  if (t !== ADMIN_TOKEN){ toast('Invalid token.', true); return; }
+  sessionStorage.setItem('momoa_admin', '1');
+  showApp();
 });
 
-async function boot(){
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) showApp(session.user);
-  else {
-    document.getElementById('loginScreen').style.display = 'flex';
-    document.getElementById('app').classList.remove('on');
-  }
+function logout(){
+  sessionStorage.removeItem('momoa_admin');
+  location.reload();
+}
+
+function boot(){
+  if (sessionStorage.getItem('momoa_admin') === '1') showApp();
 }
 boot();
 
-function showApp(user){
+function showApp(){
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').classList.add('on');
-  document.getElementById('adminEmail').textContent = user.email;
   loadAll();
-}
-
-function logout(){
-  sb.auth.signOut().then(()=>location.reload());
 }
 
 /* ============================================================
@@ -538,17 +362,10 @@ document.querySelectorAll('.nav-link').forEach(el => {
 });
 
 /* ============================================================
-   DATA LOADING
+   LOAD
    ============================================================ */
 async function loadAll(){
-  await Promise.all([
-    loadBookings(),
-    loadProfiles(),
-    loadNewsletter(),
-    loadUploads(),
-    loadNews(),
-    loadSettings()
-  ]);
+  await Promise.all([loadBookings(), loadNewsletter(), loadUploads(), loadNews(), loadSettings()]);
   updateCounts();
 }
 
@@ -558,14 +375,6 @@ async function loadBookings(){
   ALL_BOOKINGS = data || [];
   renderBookings();
   renderRecent();
-  renderStats();
-}
-
-async function loadProfiles(){
-  const { data, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
-  if (error){ toast('Profiles: ' + error.message, true); return; }
-  ALL_PROFILES = data || [];
-  renderProfiles();
   renderStats();
 }
 
@@ -599,13 +408,12 @@ async function loadSettings(){
 }
 
 /* ============================================================
-   RENDER: STATS
+   STATS
    ============================================================ */
 function renderStats(){
   document.getElementById('statBookings').textContent = ALL_BOOKINGS.length;
   document.getElementById('statPending').textContent = ALL_BOOKINGS.filter(b => b.status === 'pending_verification').length;
   document.getElementById('statPaid').textContent = ALL_BOOKINGS.filter(b => b.status === 'paid').length;
-  document.getElementById('statProfiles').textContent = ALL_PROFILES.length;
   document.getElementById('statNewsletter').textContent = ALL_NEWSLETTER.length;
   document.getElementById('statNews').textContent = ALL_NEWS.length;
 }
@@ -613,13 +421,12 @@ function renderStats(){
 function updateCounts(){
   document.getElementById('cntBookings').textContent = ALL_BOOKINGS.length;
   document.getElementById('cntGiftcards').textContent = ALL_UPLOADS.length;
-  document.getElementById('cntProfiles').textContent = ALL_PROFILES.length;
   document.getElementById('cntNewsletter').textContent = ALL_NEWSLETTER.length;
   document.getElementById('cntNews').textContent = ALL_NEWS.length;
 }
 
 /* ============================================================
-   RENDER: BOOKINGS
+   BOOKINGS
    ============================================================ */
 function renderBookings(){
   const q = (document.getElementById('searchBookings').value || '').toLowerCase();
@@ -647,9 +454,7 @@ function renderBookings(){
       <td>${b.plan === 'legend' ? 'Legend' : 'Standard'}</td>
       <td><span class="status ${b.status}">${statusLabel(b.status)}</span></td>
       <td class="cell-muted">${fmtDate(b.created_at)}</td>
-      <td class="actions">
-        <button class="btn btn-ghost btn-sm" onclick="viewBooking('${b.id}')">View</button>
-      </td>
+      <td class="actions"><button class="btn btn-ghost btn-sm" onclick="viewBooking('${b.id}')">View</button></td>
     </tr>`).join('');
 }
 
@@ -670,16 +475,16 @@ function renderRecent(){
 async function viewBooking(id){
   const b = ALL_BOOKINGS.find(x => x.id === id);
   if (!b) return;
-  const up = ALL_UPLOADS.filter(u => u.booking_id === id);
+  const ups = ALL_UPLOADS.filter(u => u.booking_id === id);
 
   let giftHtml = '';
-  for (const u of up){
+  for (const u of ups){
     const front = await signedUrl(u.front_path);
     const back = u.back_path ? await signedUrl(u.back_path) : null;
     giftHtml += `
       <div style="border:1px solid var(--line-2);padding:20px;margin-bottom:14px">
         <div class="gc-body" style="padding:0">
-          <div class="type">${escapeHtml(u.gift_card_type||'')} <span class="status ${u.status}">${u.status}</span></div>
+          <div class="type">${escapeHtml(u.gift_card_type||'')} <span class="status ${u.status}" style="font-size:9px">${u.status}</span></div>
           <div class="row"><span class="k">Value</span><span class="v">$${u.gift_card_value}</span></div>
           <div class="row"><span class="k">Submitted</span><span class="v">${fmtDate(u.created_at)}</span></div>
         </div>
@@ -724,11 +529,8 @@ async function viewBooking(id){
 async function setUploadStatus(uploadId, status, bookingId){
   const { error } = await sb.from('uploads').update({ status }).eq('id', uploadId);
   if (error){ toast(error.message, true); return; }
-  if (status === 'verified'){
-    await sb.from('bookings').update({ status: 'paid' }).eq('id', bookingId);
-  } else if (status === 'rejected'){
-    await sb.from('bookings').update({ status: 'rejected' }).eq('id', bookingId);
-  }
+  if (status === 'verified') await sb.from('bookings').update({ status: 'paid' }).eq('id', bookingId);
+  else if (status === 'rejected') await sb.from('bookings').update({ status: 'rejected' }).eq('id', bookingId);
   toast('Updated.');
   closeModal();
   await loadUploads();
@@ -736,7 +538,7 @@ async function setUploadStatus(uploadId, status, bookingId){
 }
 
 /* ============================================================
-   RENDER: GIFT CARDS
+   GIFT CARDS
    ============================================================ */
 async function renderGiftcards(){
   const q = (document.getElementById('searchGiftcards').value || '').toLowerCase();
@@ -765,7 +567,7 @@ async function renderGiftcards(){
         </div>
         <div class="gc-body">
           <div class="type">${escapeHtml(u.gift_card_type||'Unknown')} <span class="status ${u.status}" style="font-size:9px">${u.status}</span></div>
-          <div class="row"><span class="k">Value</span><span class="v">$${u.gift_card_value}</span></div>
+          <div class="value">$${u.gift_card_value}</div>
           <div class="row"><span class="k">Booker</span><span class="v">${escapeHtml(b.full_name||'—')}</span></div>
           <div class="row"><span class="k">Email</span><span class="v" style="font-size:11px">${escapeHtml(b.email||'—')}</span></div>
           <div class="row"><span class="k">Date</span><span class="v">${fmtDate(u.created_at)}</span></div>
@@ -789,7 +591,7 @@ async function viewUpload(uploadId){
   document.getElementById('modalBody').innerHTML = `
     <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Gift Card</div>
     <h3>${escapeHtml(u.gift_card_type||'')} — $${u.gift_card_value}</h3>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Submitted ${fmtDate(u.created_at)} · Booking ${escapeHtml(b.full_name||'')}</p>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Submitted ${fmtDate(u.created_at)} · ${escapeHtml(b.full_name||'')}</p>
     ${front ? `<div><div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Front</div><img class="preview" src="${front}" /></div>` : ''}
     ${back ? `<div style="margin-top:20px"><div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Back</div><img class="preview" src="${back}" /></div>` : ''}
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
@@ -820,29 +622,7 @@ async function signedUrl(path){
 }
 
 /* ============================================================
-   RENDER: PROFILES
-   ============================================================ */
-function renderProfiles(){
-  const q = (document.getElementById('searchProfiles').value || '').toLowerCase();
-  const rows = ALL_PROFILES.filter(p => {
-    if (!q) return true;
-    return [p.full_name, p.email, p.state].join(' ').toLowerCase().includes(q);
-  });
-  const tb = document.querySelector('#profilesTable tbody');
-  if (!rows.length){ tb.innerHTML = '<tr><td colspan="6" class="empty">No sign-ups match.</td></tr>'; return; }
-  tb.innerHTML = rows.map(p => `
-    <tr>
-      <td>${escapeHtml(p.full_name||'—')}</td>
-      <td class="cell-muted">${escapeHtml(p.email||'')}</td>
-      <td class="cell-muted">${escapeHtml(p.phone||'')}</td>
-      <td class="cell-muted">${escapeHtml(p.state||'')}</td>
-      <td>${p.plan ? (p.plan === 'legend' ? 'Legend' : 'Standard') : '—'}</td>
-      <td class="cell-muted">${fmtDate(p.created_at)}</td>
-    </tr>`).join('');
-}
-
-/* ============================================================
-   RENDER: NEWSLETTER
+   NEWSLETTER
    ============================================================ */
 function renderNewsletter(){
   const q = (document.getElementById('searchNewsletter').value || '').toLowerCase();
@@ -850,10 +630,8 @@ function renderNewsletter(){
   const tb = document.querySelector('#newsletterTable tbody');
   if (!rows.length){ tb.innerHTML = '<tr><td colspan="2" class="empty">No subscribers match.</td></tr>'; return; }
   tb.innerHTML = rows.map(n => `
-    <tr>
-      <td>${escapeHtml(n.email||'')}</td>
-      <td class="cell-muted">${fmtDate(n.created_at)}</td>
-    </tr>`).join('');
+    <tr><td>${escapeHtml(n.email||'')}</td><td class="cell-muted">${fmtDate(n.created_at)}</td></tr>
+  `).join('');
 }
 
 function copyEmails(){
@@ -862,7 +640,7 @@ function copyEmails(){
 }
 
 /* ============================================================
-   RENDER: NEWS
+   NEWS
    ============================================================ */
 function renderNews(){
   const wrap = document.getElementById('newsList');
@@ -893,11 +671,9 @@ document.getElementById('newsForm').addEventListener('submit', async (e) => {
   btn.disabled = true; btn.textContent = 'Saving…';
 
   let error;
-  if (id){
-    ({ error } = await sb.from('news').update({ title, body, image_url, published }).eq('id', id));
-  } else {
-    ({ error } = await sb.from('news').insert({ title, body, image_url, published }));
-  }
+  if (id) ({ error } = await sb.from('news').update({ title, body, image_url, published }).eq('id', id));
+  else    ({ error } = await sb.from('news').insert({ title, body, image_url, published }));
+
   btn.disabled = false; btn.textContent = id ? 'Update' : 'Publish';
   if (error){ toast(error.message, true); return; }
   toast(id ? 'Post updated.' : 'Post published.');
@@ -948,15 +724,7 @@ document.getElementById('settingsForm').addEventListener('submit', async (e) => 
 });
 
 /* ============================================================
-   REFRESH HANDLERS
-   ============================================================ */
-function refreshBookings(){ loadBookings(); }
-function refreshGiftcards(){ loadUploads(); }
-function refreshProfiles(){ loadProfiles(); }
-function refreshNewsletter(){ loadNewsletter(); }
-
-/* ============================================================
-   FILTER HANDLERS
+   FILTERS
    ============================================================ */
 ['searchBookings','filterStatus','filterPlan'].forEach(id => {
   document.getElementById(id).addEventListener('input', renderBookings);
@@ -964,34 +732,29 @@ function refreshNewsletter(){ loadNewsletter(); }
 });
 document.getElementById('searchGiftcards').addEventListener('input', renderGiftcards);
 document.getElementById('filterGcStatus').addEventListener('change', renderGiftcards);
-document.getElementById('searchProfiles').addEventListener('input', renderProfiles);
 document.getElementById('searchNewsletter').addEventListener('input', renderNewsletter);
 
 /* ============================================================
-   MODAL
+   MODAL + UTIL
    ============================================================ */
 function openModal(){ document.getElementById('modal').classList.add('on'); }
 function closeModal(){ document.getElementById('modal').classList.remove('on'); }
 document.getElementById('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
 
-/* ============================================================
-   UTIL
-   ============================================================ */
 function statusLabel(s){
   return ({pending_payment:'Pending Payment',pending_verification:'Under Review',paid:'Confirmed',rejected:'Rejected',verified:'Verified'})[s] || s || '—';
 }
 function fmtDate(d){
   if (!d) return '—';
-  return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) + ' · ' +
-         new Date(d).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const dt = new Date(d);
+  return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) + ' · ' +
+         dt.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
 }
 function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function escapeAttr(s){return String(s==null?'':s).replace(/"/g,'&quot;');}
 function toast(msg, err){
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.toggle('err', !!err);
-  t.classList.add('on');
+  t.textContent = msg; t.classList.toggle('err', !!err); t.classList.add('on');
   setTimeout(()=>t.classList.remove('on'), 3400);
 }
 </script>
